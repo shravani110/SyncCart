@@ -22,7 +22,7 @@ function AppContent() {
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
       <Navbar onOpenRoomModal={() => setRoomModalOpen(true)} />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage onOpenRoomModal={() => setRoomModalOpen(true)} />} />
           <Route path="/login" element={<LoginPage />} />
@@ -59,7 +59,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-3.5 mt-auto text-center text-xs text-slate-500 shadow-2xs">
+      <footer className="border-t border-slate-200 bg-white py-2.5 sm:py-3 mt-auto text-center text-xs text-slate-500 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
           <p>© {new Date().getFullYear()} SyncCart — Collaborative Shopping System.</p>
         </div>

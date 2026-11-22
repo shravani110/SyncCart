@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Crown, ShoppingBag, UserMinus } from 'lucide-react';
 import { formatCurrency, formatPercent, getInitials } from '../utils/formatters';
 import { useRoom } from '../context/RoomContext';
 
 export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember }) => {
   const { currency } = useRoom();
+  const [memberToRemove, setMemberToRemove] = useState(null);
   if (!room) return null;
 
   const contributions = room.contributions || [];
@@ -114,17 +115,36 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
 
                 {/* Host can remove members (except self) */}
                 {isHost && !isUserHost && onRemoveMember && (
-                  <button
-                    onClick={() => {
-                      if (confirm(`Remove ${contrib.fullName} from this shopping room?`)) {
-                        onRemoveMember(contrib.userId);
-                      }
-                    }}
-                    title="Remove member from room"
-                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
-                  >
-                    <UserMinus className="w-4 h-4" />
-                  </button>
+                  memberToRemove === contrib.userId ? (
+                    <div className="flex items-center gap-1 bg-rose-50 border border-rose-200 p-1 rounded-lg animate-fade-in">
+                      <span className="text-[10px] font-bold text-rose-800">Remove?</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onRemoveMember(contrib.userId);
+                          setMemberToRemove(null);
+                        }}
+                        className="px-1.5 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMemberToRemove(null)}
+                        className="px-1.5 py-0.5 bg-white text-slate-700 border border-slate-200 rounded text-[10px]"
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setMemberToRemove(contrib.userId)}
+                      title="Remove member from room"
+                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                    >
+                      <UserMinus className="w-4 h-4" />
+                    </button>
+                  )
                 )}
               </div>
             </div>

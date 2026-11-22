@@ -48,6 +48,9 @@ export const RoomPage = () => {
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [clearingCart, setClearingCart] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [leavingRoom, setLeavingRoom] = useState(false);
 
   useEffect(() => {
     if (roomCode) {
@@ -71,9 +74,9 @@ export const RoomPage = () => {
     }
   };
 
-  const handleClearCart = async () => {
-    if (!window.confirm('Are you sure you want to clear the entire room cart?')) return;
+  const handleConfirmClearCart = async () => {
     setClearingCart(true);
+    setShowClearConfirm(false);
     try {
       await clearRoomCart();
     } catch (err) {
@@ -83,13 +86,16 @@ export const RoomPage = () => {
     }
   };
 
-  const handleLeaveRoom = async () => {
-    if (!window.confirm('Leave this shopping room?')) return;
+  const handleConfirmLeave = async () => {
+    setLeavingRoom(true);
     try {
       await leaveRoom();
       navigate('/products');
     } catch (err) {
       console.error(err);
+    } finally {
+      setLeavingRoom(false);
+      setShowLeaveConfirm(false);
     }
   };
 
@@ -162,10 +168,10 @@ export const RoomPage = () => {
       />
 
       {/* Main Grid: Cart Items (Left 2 cols) & Split Summary (Right 1 col) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
         {/* Left: Synchronized Cart Items */}
-        <div className="lg:col-span-2 flex flex-col">
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex flex-col">
+        <div className="lg:col-span-2 flex flex-col h-full">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex-1 flex flex-col h-full">
             {/* Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
@@ -196,33 +202,53 @@ export const RoomPage = () => {
                 </Link>
 
                 {isHost && cartItems.length > 0 && (
-                  <button
-                    onClick={handleClearCart}
-                    disabled={clearingCart}
-                    className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
-                    title="Host privilege: Clear entire cart"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    <span>Clear Cart</span>
-                  </button>
+                  showClearConfirm ? (
+                    <div className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 py-1 px-2 rounded-xl animate-fade-in shadow-2xs">
+                      <span className="text-[11px] font-bold text-rose-800">Clear all?</span>
+                      <button
+                        type="button"
+                        onClick={handleConfirmClearCart}
+                        disabled={clearingCart}
+                        className="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[11px] font-bold shadow-2xs transition"
+                      >
+                        {clearingCart ? '...' : 'Yes, Clear'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowClearConfirm(false)}
+                        className="px-2 py-0.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg text-[11px] font-semibold transition"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setShowClearConfirm(true)}
+                      className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+                      title="Host privilege: Clear entire cart"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Clear Cart</span>
+                    </button>
+                  )
                 )}
               </div>
             </div>
 
             {/* Cart Items List */}
             {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 sm:py-14 text-center space-y-2.5">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 mx-auto flex items-center justify-center shadow-2xs">
-                  <ShoppingBag className="w-6 h-6" />
+              <div className="flex-1 flex flex-col items-center justify-center py-16 text-center space-y-3 min-h-[300px]">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 mx-auto flex items-center justify-center shadow-2xs">
+                  <ShoppingBag className="w-7 h-7" />
                 </div>
                 <h4 className="text-base font-bold text-slate-900">Your room cart is empty</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
                   Browse the catalog and add products. Every item you add will appear instantly on everyone's screen!
                 </p>
-                <div className="pt-1.5">
+                <div className="pt-2">
                   <Link
                     to="/products"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-blue-500/20"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-blue-500/20"
                   >
                     <span>Browse Catalog</span>
                     <ArrowRight className="w-4 h-4" />
@@ -322,13 +348,49 @@ export const RoomPage = () => {
             </div>
 
             <div className="pt-1">
-              <button
-                onClick={handleLeaveRoom}
-                className="w-full py-2 text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 hover:border-rose-200 flex items-center justify-center gap-1.5 transition"
-              >
-                <DoorOpen className="w-4 h-4" />
-                <span>Leave Shopping Room</span>
-              </button>
+              {showLeaveConfirm ? (
+                <div className="p-3 bg-rose-50/90 border border-rose-200 rounded-xl space-y-2 text-center animate-fade-in shadow-2xs">
+                  <div className="flex items-center justify-center gap-1.5 text-rose-800 font-bold text-xs">
+                    <DoorOpen className="w-4 h-4 text-rose-600" />
+                    <span>Leave this shopping room?</span>
+                  </div>
+                  <p className="text-[11px] text-rose-700 leading-snug">
+                    You will exit this shared shopping session. You can re-join anytime using the room code.
+                  </p>
+                  <div className="flex items-center justify-center gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowLeaveConfirm(false)}
+                      disabled={leavingRoom}
+                      className="px-3 py-1.5 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg shadow-2xs transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleConfirmLeave}
+                      disabled={leavingRoom}
+                      className="px-3.5 py-1.5 text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-lg shadow-xs flex items-center gap-1.5 transition active:scale-[0.98]"
+                    >
+                      {leavingRoom ? (
+                        <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <DoorOpen className="w-3.5 h-3.5" />
+                      )}
+                      <span>Yes, Leave Room</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowLeaveConfirm(true)}
+                  className="w-full py-2 text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 hover:border-rose-200 flex items-center justify-center gap-1.5 transition"
+                >
+                  <DoorOpen className="w-4 h-4" />
+                  <span>Leave Shopping Room</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
