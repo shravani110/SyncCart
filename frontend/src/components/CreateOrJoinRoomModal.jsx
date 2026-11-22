@@ -24,10 +24,15 @@ export const CreateOrJoinRoomModal = ({
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!name.trim()) return;
+    const num = Number(budgetLimit);
+    if (isNaN(num) || num < 500) {
+      setError('Minimum budget limit is 500. Below 500 is not accepted.');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const room = await onCreateRoom(name.trim(), Number(budgetLimit));
+      const room = await onCreateRoom(name.trim(), num);
       onClose();
       navigate(`/room/${room.roomCode}`);
     } catch (err) {
@@ -152,19 +157,22 @@ export const CreateOrJoinRoomModal = ({
                   </select>
                   <input
                     type="number"
-                    min="1"
-                    step="100"
+                    min="500"
+                    step="any"
                     value={budgetLimit}
                     onChange={(e) => setBudgetLimit(e.target.value)}
                     className="w-full px-3 py-2.5 bg-white text-slate-900 text-sm focus:outline-none"
-                    placeholder="Enter budget limit"
+                    placeholder="Min. 500"
                     required
                   />
                 </div>
+                <span className="text-[10px] text-slate-400 block mb-2">
+                  Minimum budget limit is 500
+                </span>
 
                 {/* Quick Budget Chips */}
                 <div className="flex gap-2">
-                  {[1000, 5000, 10000, 25000].map((amt) => (
+                  {[500, 1000, 5000, 10000, 25000].map((amt) => (
                     <button
                       type="button"
                       key={amt}

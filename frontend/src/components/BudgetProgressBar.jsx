@@ -30,9 +30,13 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
 
   const handleSaveBudget = async (e) => {
     e.preventDefault();
-    if (newBudget <= 0) return;
+    const val = Number(newBudget);
+    if (isNaN(val) || val < 500) {
+      alert('Minimum room budget must be at least 500.');
+      return;
+    }
     try {
-      await onUpdateBudget(newBudget);
+      await onUpdateBudget(val);
       setIsEditing(false);
     } catch (err) {
       console.error(err);
@@ -83,12 +87,12 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
                   </select>
                   <input
                     type="number"
-                    min="1"
-                    step="50"
+                    min="500"
+                    step="any"
                     value={newBudget}
                     onChange={(e) => setNewBudget(e.target.value)}
                     className="w-28 px-2.5 py-1.5 text-sm bg-white text-slate-900 focus:outline-none"
-                    placeholder="Limit"
+                    placeholder="Min 500"
                     autoFocus
                   />
                 </div>

@@ -47,29 +47,29 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4">
-      <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-10 w-full max-w-md shadow-xl">
+    <div className="flex-1 flex items-center justify-center py-2 px-4">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 w-full max-w-md shadow-lg">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 mx-auto flex items-center justify-center shadow-md shadow-blue-500/25 mb-3">
-            <ShoppingCart className="w-6 h-6 text-white" />
+        <div className="text-center mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 mx-auto flex items-center justify-center shadow-md shadow-blue-500/25 mb-2">
+            <ShoppingCart className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900">Welcome Back</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">Welcome Back</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
             Sign in to access your shared shopping rooms
           </p>
         </div>
 
         {error && (
-          <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-3 p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label className="text-xs font-bold text-slate-700 block mb-1">
               Username or Email
             </label>
             <input
@@ -77,13 +77,13 @@ export const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="e.g. alice or alice@example.com"
-              className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
+              className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
               required
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1.5">
+            <label className="text-xs font-bold text-slate-700 block mb-1">
               Password
             </label>
             <input
@@ -91,7 +91,7 @@ export const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
+              className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
               required
             />
           </div>
@@ -99,7 +99,7 @@ export const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50"
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50"
           >
             {loading ? (
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -113,8 +113,8 @@ export const LoginPage = () => {
         </form>
 
         {/* 1-Click Quick Demo Switcher */}
-        <div className="mt-6 pt-6 border-t border-slate-100">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">
+        <div className="mt-3.5 pt-3 border-t border-slate-100">
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Quick 1-Click Demo Accounts</span>
           </div>
@@ -122,7 +122,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickLogin('alice', 'password123')}
-              className="p-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
               <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-[10px]">
                 A
@@ -136,7 +136,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickLogin('bob', 'password123')}
-              className="p-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
               <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px]">
                 B
@@ -150,7 +150,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickLogin('charlie', 'password123')}
-              className="p-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
               <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[10px]">
                 C
@@ -164,7 +164,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickLogin('diana', 'password123')}
-              className="p-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
               <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-800 font-bold flex items-center justify-center text-[10px]">
                 D
@@ -177,7 +177,7 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <p className="text-center text-xs text-slate-500 mt-6">
+        <p className="text-center text-xs text-slate-500 mt-3">
           Don't have an account?{' '}
           <Link to="/register" className="font-bold text-blue-600 hover:text-blue-700">
             Sign up now

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class UpdateBudgetRequest {
 
     @NotNull(message = "Budget limit is required")
-    @DecimalMin(value = "1.00", message = "Budget must be at least 1.00")
+    @DecimalMin(value = "500.00", message = "Budget must be at least 500")
     private BigDecimal budgetLimit;
 
     public UpdateBudgetRequest() {

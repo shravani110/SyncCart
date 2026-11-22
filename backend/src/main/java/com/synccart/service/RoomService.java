@@ -48,6 +48,9 @@ public class RoomService {
 
     @Transactional
     public RoomDetailsDto createRoom(CreateRoomRequest request, User host) {
+        if (request.getBudgetLimit() == null || request.getBudgetLimit().compareTo(new BigDecimal("500.00")) < 0) {
+            throw new IllegalArgumentException("Minimum budget limit is 500");
+        }
         String roomCode = generateUniqueRoomCode();
         ShoppingRoom room = new ShoppingRoom(roomCode, request.getName(), request.getBudgetLimit(), host);
         ShoppingRoom savedRoom = roomRepository.save(room);
@@ -225,6 +228,10 @@ public class RoomService {
 
         if (member.getRoomRole() != RoomRole.HOST) {
             throw new IllegalStateException("Only the room Host can update the shared budget");
+        }
+
+        if (request.getBudgetLimit() == null || request.getBudgetLimit().compareTo(new BigDecimal("500.00")) < 0) {
+            throw new IllegalArgumentException("Minimum budget limit is 500");
         }
 
         room.setBudgetLimit(request.getBudgetLimit());

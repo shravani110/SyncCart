@@ -59,7 +59,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500 shadow-2xs">
+      <footer className="border-t border-slate-200 bg-white py-3.5 mt-auto text-center text-xs text-slate-500 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
           <p>© {new Date().getFullYear()} SyncCart — Collaborative Shopping System.</p>
         </div>

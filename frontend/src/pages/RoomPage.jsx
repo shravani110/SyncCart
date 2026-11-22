@@ -157,10 +157,10 @@ export const RoomPage = () => {
       />
 
       {/* Main Grid: Cart Items (Left 2 cols) & Split Summary (Right 1 col) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         {/* Left: Synchronized Cart Items */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm">
+        <div className="lg:col-span-2 flex flex-col h-full">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex-1 flex flex-col">
             {/* Header */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
               <div className="flex items-center gap-3">
@@ -206,11 +206,11 @@ export const RoomPage = () => {
 
             {/* Cart Items List */}
             {cartItems.length === 0 ? (
-              <div className="py-12 text-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
-                  <ShoppingBag className="w-6 h-6" />
+              <div className="flex-1 flex flex-col items-center justify-center py-16 text-center space-y-3">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 mx-auto flex items-center justify-center shadow-2xs">
+                  <ShoppingBag className="w-7 h-7" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-900">Your room cart is empty</h4>
+                <h4 className="text-base font-bold text-slate-900">Your room cart is empty</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
                   Browse the catalog and add products. Every item you add will appear instantly on everyone's screen!
                 </p>
@@ -225,7 +225,7 @@ export const RoomPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-3 flex-1">
                 {cartItems.map((item) => (
                   <CartItemRow
                     key={item.id}
@@ -241,7 +241,7 @@ export const RoomPage = () => {
 
             {/* Checkout Action Bar */}
             {cartItems.length > 0 && (
-              <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+              <div className="mt-auto pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <span className="text-xs text-slate-500 font-medium block">Total Cart Value</span>
                   <span className="text-2xl font-black text-slate-900">
