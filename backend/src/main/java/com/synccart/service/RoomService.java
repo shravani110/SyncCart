@@ -68,7 +68,8 @@ public class RoomService {
                 .orElseThrow(() -> new IllegalArgumentException("Shopping room not found with code: " + upperCode));
 
         if (room.getStatus() == RoomStatus.CHECKED_OUT) {
-            throw new IllegalStateException("This room has already completed checkout");
+            room.setStatus(RoomStatus.ACTIVE);
+            roomRepository.save(room);
         }
 
         Optional<RoomMember> existing = memberRepository.findByRoomAndUser(room, user);

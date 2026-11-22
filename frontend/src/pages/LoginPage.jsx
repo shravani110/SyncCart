@@ -47,15 +47,15 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center py-1 sm:py-2 px-4">
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 w-full max-w-sm shadow-md">
+    <div className="flex-1 flex flex-col justify-center py-4 sm:py-6 px-4 my-auto">
+      <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 w-full max-w-sm mx-auto shadow-md space-y-3.5 sm:space-y-4">
         {/* Header */}
-        <div className="text-center mb-3">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 mx-auto flex items-center justify-center shadow-xs shadow-blue-500/25 mb-1.5">
-            <ShoppingCart className="w-4 h-4 text-white" />
+        <div className="text-center mb-2">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 mx-auto flex items-center justify-center shadow-md shadow-blue-500/25 mb-2">
+            <ShoppingCart className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-lg sm:text-xl font-black text-slate-900">Welcome Back</h2>
-          <p className="text-[11px] text-slate-500">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">Welcome Back</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
             Sign in to access your shared shopping rooms
           </p>
         </div>
@@ -67,9 +67,9 @@ export const LoginPage = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="text-[11px] font-bold text-slate-700 block mb-0.5">
+            <label className="text-xs font-bold text-slate-700 block mb-1">
               Username or Email
             </label>
             <input
@@ -77,13 +77,13 @@ export const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="e.g. alice or alice@example.com"
-              className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
+              className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
               required
             />
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-slate-700 block mb-0.5">
+            <label className="text-xs font-bold text-slate-700 block mb-1">
               Password
             </label>
             <input
@@ -91,7 +91,7 @@ export const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
+              className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
               required
             />
           </div>
@@ -99,13 +99,13 @@ export const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs shadow-blue-500/25 flex items-center justify-center gap-1.5 transition disabled:opacity-50"
+            className="w-full mt-2 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50"
           >
             {loading ? (
-              <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
               <>
-                <LogIn className="w-3.5 h-3.5" />
+                <LogIn className="w-4 h-4" />
                 <span>Sign In</span>
               </>
             )}
@@ -113,71 +113,71 @@ export const LoginPage = () => {
         </form>
 
         {/* 1-Click Quick Demo Switcher */}
-        <div className="mt-2.5 pt-2 border-t border-slate-100">
-          <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-            <Sparkles className="w-3 h-3 text-amber-500" />
+        <div className="pt-3 border-t border-slate-100">
+          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Quick 1-Click Demo Accounts</span>
           </div>
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => handleQuickLogin('alice', 'password123')}
-              className="p-1.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-1.5 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
-              <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-[9px] flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0">
                 A
               </div>
               <div className="min-w-0">
-                <span className="font-bold text-slate-900 block text-[10px] truncate">Alice</span>
-                <span className="text-[9px] text-amber-700 font-medium block truncate">Host (Demo)</span>
+                <span className="font-bold text-slate-900 block text-xs truncate">Alice</span>
+                <span className="text-[10px] text-amber-700 font-medium block truncate">Host (Demo)</span>
               </div>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickLogin('bob', 'password123')}
-              className="p-1.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-1.5 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
-              <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[9px] flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0">
                 B
               </div>
               <div className="min-w-0">
-                <span className="font-bold text-slate-900 block text-[10px] truncate">Bob</span>
-                <span className="text-[9px] text-blue-700 font-medium block truncate">Member</span>
+                <span className="font-bold text-slate-900 block text-xs truncate">Bob</span>
+                <span className="text-[10px] text-blue-700 font-medium block truncate">Member</span>
               </div>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickLogin('charlie', 'password123')}
-              className="p-1.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-1.5 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
-              <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[9px] flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0">
                 C
               </div>
               <div className="min-w-0">
-                <span className="font-bold text-slate-900 block text-[10px] truncate">Charlie</span>
-                <span className="text-[9px] text-slate-500 font-medium block truncate">Member</span>
+                <span className="font-bold text-slate-900 block text-xs truncate">Charlie</span>
+                <span className="text-[10px] text-slate-500 font-medium block truncate">Member</span>
               </div>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickLogin('diana', 'password123')}
-              className="p-1.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-1.5 shadow-2xs"
+              className="p-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition text-xs flex items-center gap-2 shadow-2xs"
             >
-              <div className="w-5 h-5 rounded-full bg-purple-100 text-purple-800 font-bold flex items-center justify-center text-[9px] flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0">
                 D
               </div>
               <div className="min-w-0">
-                <span className="font-bold text-slate-900 block text-[10px] truncate">Diana</span>
-                <span className="text-[9px] text-slate-500 font-medium block truncate">Member</span>
+                <span className="font-bold text-slate-900 block text-xs truncate">Diana</span>
+                <span className="text-[10px] text-slate-500 font-medium block truncate">Member</span>
               </div>
             </button>
           </div>
         </div>
 
-        <p className="text-center text-[11px] text-slate-500 mt-2">
+        <p className="text-center text-xs text-slate-500 pt-1">
           Don't have an account?{' '}
           <Link to="/register" className="font-bold text-blue-600 hover:text-blue-700">
             Sign up now

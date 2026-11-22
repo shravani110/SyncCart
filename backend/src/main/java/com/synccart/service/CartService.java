@@ -44,7 +44,8 @@ public class CartService {
             throw new IllegalArgumentException("User is not a member of room: " + room.getRoomCode());
         }
         if (room.getStatus() == RoomStatus.CHECKED_OUT) {
-            throw new IllegalStateException("Room has completed checkout. Cart is locked.");
+            room.setStatus(RoomStatus.ACTIVE);
+            roomRepository.save(room);
         }
     }
 
