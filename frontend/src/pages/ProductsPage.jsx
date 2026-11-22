@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Sparkles, Users, ShoppingBag, AlertCircle } from 'lucide-react';
 import { productApi } from '../api/productApi';
 import { ProductCard } from '../components/ProductCard';
+import { ProductDetailModal } from '../components/ProductDetailModal';
 import { useRoom } from '../context/RoomContext';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
@@ -13,6 +14,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { room, addItemToCart, liveNotification } = useRoom();
   const { isAuthenticated } = useAuth();
@@ -191,10 +193,19 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
               key={product.id}
               product={product}
               onAddToCart={handleAddToCart}
+              onSelectProduct={(p) => setSelectedProduct(p)}
             />
           ))}
         </div>
       )}
+
+      {/* Product Detail "Boom" Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 };

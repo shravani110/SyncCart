@@ -32,10 +32,17 @@ public class Product {
     @Column(nullable = false)
     private Integer stockQuantity = 50;
 
+    @Column(length = 50)
+    private String unit = "1 pack";
+
     public Product() {
     }
 
     public Product(String name, String category, BigDecimal price, String imageUrl, String description, Double rating, Integer stockQuantity) {
+        this(name, category, price, imageUrl, description, rating, stockQuantity, "1 pack");
+    }
+
+    public Product(String name, String category, BigDecimal price, String imageUrl, String description, Double rating, Integer stockQuantity, String unit) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -43,6 +50,7 @@ public class Product {
         this.description = description;
         this.rating = rating != null ? rating : 4.5;
         this.stockQuantity = stockQuantity != null ? stockQuantity : 50;
+        this.unit = unit != null ? unit : "1 pack";
     }
 
     public Long getId() {
@@ -107,5 +115,13 @@ public class Product {
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

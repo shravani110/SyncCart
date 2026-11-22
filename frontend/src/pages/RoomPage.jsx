@@ -17,6 +17,8 @@ import { MemberSplitSummary } from '../components/MemberSplitSummary';
 import { ActiveMembersBadge } from '../components/ActiveMembersBadge';
 import { CartItemRow } from '../components/CartItemRow';
 import { CheckoutModal } from '../components/CheckoutModal';
+import { ActivityFeed } from '../components/ActivityFeed';
+import { ProductDetailModal } from '../components/ProductDetailModal';
 import { formatCurrency } from '../utils/formatters';
 
 export const RoomPage = () => {
@@ -30,7 +32,9 @@ export const RoomPage = () => {
     isConnected,
     isHost,
     liveNotification,
+    activityFeed,
     enterRoom,
+    addItemToCart,
     updateItemQty,
     removeItemFromCart,
     clearRoomCart,
@@ -43,6 +47,7 @@ export const RoomPage = () => {
 
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [clearingCart, setClearingCart] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (roomCode) {
@@ -234,6 +239,16 @@ export const RoomPage = () => {
                     isHost={isHost}
                     onUpdateQuantity={handleUpdateQty}
                     onRemoveItem={handleRemoveItem}
+                    onSelectProduct={(it) =>
+                      setSelectedProduct({
+                        id: it.productId,
+                        name: it.productName,
+                        category: it.productCategory,
+                        price: it.unitPrice,
+                        imageUrl: it.productImageUrl,
+                        description: `Item in room cart. Added by ${it.addedByFullName || it.addedByUsername}.`,
+                      })
+                    }
                   />
                 ))}
               </div>
@@ -269,7 +284,7 @@ export const RoomPage = () => {
           </div>
         </div>
 
-        {/* Right: Member Contributions & Room Actions */}
+        {/* Right: Member Contributions & Activity Feed & Room Actions */}
         <div className="space-y-6">
           <MemberSplitSummary
             room={room}
@@ -277,6 +292,9 @@ export const RoomPage = () => {
             isHost={isHost}
             onRemoveMember={removeRoomMember}
           />
+
+          {/* Real-time Activity Feed from Reference Design */}
+          <ActivityFeed activities={activityFeed} />
 
           {/* Room Controls Card */}
           <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-4">
@@ -323,6 +341,14 @@ export const RoomPage = () => {
         room={room}
         isHost={isHost}
         onFinalizeCheckout={checkoutRoom}
+      />
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={(pid, q) => addItemToCart(pid, q)}
       />
     </div>
   );

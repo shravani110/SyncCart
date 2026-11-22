@@ -21,6 +21,7 @@ export const RoomProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [liveNotification, setLiveNotification] = useState(null);
+  const [activityFeed, setActivityFeed] = useState([]);
 
   // Clear live notification after 4 seconds
   useEffect(() => {
@@ -36,14 +37,17 @@ export const RoomProvider = ({ children }) => {
   const handleWebSocketMessage = useCallback((msg) => {
     console.log('[WebSocket Message Received]', msg);
 
-    // Show live alert banner
+    // Show live alert banner & update activity feed
     if (msg.message) {
-      setLiveNotification({
-        type: msg.type,
+      const newEntry = {
+        id: Date.now() + Math.random(),
+        type: msg.type?.toLowerCase() || 'info',
         message: msg.message,
         sender: msg.senderFullName || msg.senderUsername,
         timestamp: msg.timestamp || new Date().toISOString(),
-      });
+      };
+      setLiveNotification(newEntry);
+      setActivityFeed((prev) => [newEntry, ...prev.filter((e) => e.message !== msg.message)].slice(0, 30));
     }
 
     // If message contains updated room details payload
@@ -73,6 +77,16 @@ export const RoomProvider = ({ children }) => {
     try {
       const data = await roomApi.getRoomDetails(code);
       setRoom(data);
+      if (data && data.cartItems && data.cartItems.length > 0) {
+        const initialActivities = data.cartItems.map((item) => ({
+          id: item.id,
+          type: 'success',
+          message: `${item.addedByFullName || item.addedByUsername} added ${item.quantity}x ${item.productName}`,
+          sender: item.addedByFullName || item.addedByUsername,
+          timestamp: item.updatedAt || new Date().toISOString(),
+        }));
+        setActivityFeed((prev) => (prev.length === 0 ? initialActivities : prev));
+      }
       localStorage.setItem('synccart_active_room', code);
     } catch (err) {
       console.error('Failed to load room details:', err);
@@ -191,6 +205,7 @@ export const RoomProvider = ({ children }) => {
         isConnected,
         isHost,
         liveNotification,
+        activityFeed,
         enterRoom,
         createRoom,
         joinRoomByCode,

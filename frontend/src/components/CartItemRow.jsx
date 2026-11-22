@@ -9,6 +9,7 @@ export const CartItemRow = ({
   isHost,
   onUpdateQuantity,
   onRemoveItem,
+  onSelectProduct,
 }) => {
   const { currency } = useRoom();
   const isOwner = item.addedByUserId === currentUserId;
@@ -17,17 +18,20 @@ export const CartItemRow = ({
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white hover:bg-blue-50/30 border border-slate-200/90 rounded-2xl gap-4 shadow-2xs transition-all group">
       {/* Product Image & Details */}
-      <div className="flex items-center gap-3.5">
+      <div
+        className="flex items-center gap-3.5 cursor-pointer"
+        onClick={() => onSelectProduct && onSelectProduct(item)}
+      >
         <img
           src={item.productImageUrl}
           alt={item.productName}
-          className="w-16 h-16 rounded-xl object-cover bg-slate-50 border border-slate-200 flex-shrink-0 shadow-2xs"
+          className="w-16 h-16 rounded-xl object-cover bg-slate-50 border border-slate-200 flex-shrink-0 shadow-2xs group-hover:scale-105 transition-transform"
         />
         <div>
           <span className="text-[10px] font-bold tracking-wider text-blue-600 uppercase">
             {item.productCategory}
           </span>
-          <h4 className="text-sm font-bold text-slate-900 leading-tight line-clamp-1">
+          <h4 className="text-sm font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">
             {item.productName}
           </h4>
           <div className="text-xs text-slate-500 mt-1">
