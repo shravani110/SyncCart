@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Star, Check, Plus, Minus } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const ProductCard = ({ product, onAddToCart, disabled = false }) => {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { currency } = useRoom();
 
   const handleAdd = async () => {
     if (disabled || loading) return;
@@ -58,7 +60,7 @@ export const ProductCard = ({ product, onAddToCart, disabled = false }) => {
           <div>
             <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Price</span>
             <span className="text-lg font-black text-slate-900">
-              {formatCurrency(product.price)}
+              {formatCurrency(product.price, currency)}
             </span>
           </div>
 

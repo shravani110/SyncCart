@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { Package, Clock, ExternalLink, ShoppingBag, ArrowRight } from 'lucide-react';
 import { orderApi } from '../api/orderApi';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const OrdersHistoryPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currency } = useRoom();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -29,7 +31,7 @@ export const OrdersHistoryPage = () => {
         <div>
           <h1 className="text-2xl font-black text-slate-900">Order History</h1>
           <p className="text-xs text-slate-500 mt-1">
-            All collaborative orders completed across your shopping rooms (in ₹)
+            All collaborative orders completed across your shopping rooms
           </p>
         </div>
         <Link
@@ -98,7 +100,7 @@ export const OrdersHistoryPage = () => {
               <div className="flex items-center justify-between sm:justify-end gap-5">
                 <div className="text-right">
                   <span className="text-base font-black text-slate-900 block">
-                    {formatCurrency(order.totalAmount)}
+                    {formatCurrency(order.totalAmount, currency)}
                   </span>
                   <span className="text-[10px] text-slate-500 font-medium">
                     {order.paymentMethod.replace('_', ' ')}

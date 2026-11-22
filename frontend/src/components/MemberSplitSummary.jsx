@@ -1,8 +1,10 @@
 import React from 'react';
 import { Crown, ShoppingBag, UserMinus } from 'lucide-react';
 import { formatCurrency, formatPercent, getInitials } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember }) => {
+  const { currency } = useRoom();
   if (!room) return null;
 
   const contributions = room.contributions || [];
@@ -20,7 +22,7 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
             </span>
           </h3>
           <p className="text-xs text-slate-500">
-            Real-time individual spending breakdown & equal split analysis (in ₹)
+            Real-time individual spending breakdown & equal split analysis
           </p>
         </div>
       </div>
@@ -98,10 +100,10 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <div className="text-sm font-extrabold text-slate-900">
-                    {formatCurrency(contrib.totalContribution)}
+                    {formatCurrency(contrib.totalContribution, currency)}
                   </div>
                   <div className="text-[10px] text-slate-500 font-medium">
-                    Split share: {formatCurrency(room.perMemberEqualSplit)}
+                    Split share: {formatCurrency(room.perMemberEqualSplit, currency)}
                   </div>
                 </div>
 

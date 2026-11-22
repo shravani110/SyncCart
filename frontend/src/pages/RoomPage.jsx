@@ -38,6 +38,7 @@ export const RoomPage = () => {
     removeRoomMember,
     checkoutRoom,
     leaveRoom,
+    currency,
   } = useRoom();
 
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -174,7 +175,7 @@ export const RoomPage = () => {
                     </span>
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Items added by any member update here live in ₹
+                    Items added by any member update here live
                   </p>
                 </div>
               </div>
@@ -244,7 +245,7 @@ export const RoomPage = () => {
                 <div>
                   <span className="text-xs text-slate-500 font-medium block">Total Cart Value</span>
                   <span className="text-2xl font-black text-slate-900">
-                    {formatCurrency(room.totalCartAmount)}
+                    {formatCurrency(room.totalCartAmount, currency)}
                   </span>
                 </div>
 

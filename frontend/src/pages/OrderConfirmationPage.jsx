@@ -3,12 +3,14 @@ import { useParams, Link } from 'react-router-dom';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { orderApi } from '../api/orderApi';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const OrderConfirmationPage = () => {
   const { orderNumber } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { currency } = useRoom();
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -63,7 +65,7 @@ export const OrderConfirmationPage = () => {
           Group Order Confirmed!
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-          The collaborative cart was checked out. A confirmation receipt has been generated for all room members in Indian Rupees (₹).
+          The collaborative cart was checked out. A confirmation receipt has been generated for all room members.
         </p>
         <div className="pt-2 inline-flex items-center gap-2 px-3 py-1 bg-white border border-emerald-200 rounded-full text-xs font-mono font-bold text-emerald-800 shadow-2xs">
           <span>Order #{order.orderNumber}</span>
@@ -108,10 +110,10 @@ export const OrderConfirmationPage = () => {
                 <div>
                   <span className="font-bold text-slate-900 block">{item.productName}</span>
                   <span className="text-[11px] text-slate-500">
-                    Added by: <strong className="text-blue-700">{item.addedByFullName}</strong> • Qty: {item.quantity} × {formatCurrency(item.unitPrice)}
+                    Added by: <strong className="text-blue-700">{item.addedByFullName}</strong> • Qty: {item.quantity} × {formatCurrency(item.unitPrice, currency)}
                   </span>
                 </div>
-                <span className="font-extrabold text-slate-900">{formatCurrency(item.subtotal)}</span>
+                <span className="font-extrabold text-slate-900">{formatCurrency(item.subtotal, currency)}</span>
               </div>
             ))}
           </div>
@@ -136,7 +138,7 @@ export const OrderConfirmationPage = () => {
                     </span>
                   </div>
                   <span className="font-extrabold text-emerald-700">
-                    {formatCurrency(c.totalContribution)}
+                    {formatCurrency(c.totalContribution, currency)}
                   </span>
                 </div>
               ))}
@@ -148,7 +150,7 @@ export const OrderConfirmationPage = () => {
         <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
           <span className="text-sm font-semibold text-slate-600">Total Paid</span>
           <span className="text-2xl font-black text-blue-600">
-            {formatCurrency(order.totalAmount)}
+            {formatCurrency(order.totalAmount, currency)}
           </span>
         </div>
       </div>

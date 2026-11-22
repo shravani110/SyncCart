@@ -1,10 +1,20 @@
-export const formatCurrency = (amount) => {
+export const CURRENCY_SYMBOLS = {
+  INR: 'Rs. ',
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+};
+
+export const formatCurrency = (amount, currencyCode = 'INR') => {
   const num = Number(amount) || 0;
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  const symbol = CURRENCY_SYMBOLS[currencyCode] || 'Rs. ';
+
+  const formatted = new Intl.NumberFormat('en-IN', {
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(num);
+
+  return `${symbol}${formatted}`;
 };
 
 export const formatPercent = (value) => {

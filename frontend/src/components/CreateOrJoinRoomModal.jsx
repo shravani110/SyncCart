@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, PlusCircle, LogIn, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useRoom } from '../context/RoomContext';
+import { CURRENCY_SYMBOLS } from '../utils/formatters';
 
 export const CreateOrJoinRoomModal = ({
   isOpen,
@@ -14,6 +16,7 @@ export const CreateOrJoinRoomModal = ({
   const [roomCode, setRoomCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { currency, setCurrency } = useRoom();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -133,17 +136,28 @@ export const CreateOrJoinRoomModal = ({
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                  Shared Budget Limit (₹)
+                  Shared Budget Limit
                 </label>
-                <div className="relative mb-2">
-                  <span className="absolute left-3.5 top-2 text-slate-500 font-bold text-sm">₹</span>
+                <div className="flex rounded-xl border border-slate-300 overflow-hidden shadow-2xs focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 mb-2">
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="bg-slate-50 text-slate-800 text-xs font-bold px-3 py-2.5 border-r border-slate-300 focus:outline-none cursor-pointer hover:bg-slate-100 transition"
+                    title="Select Currency"
+                  >
+                    <option value="INR">Rs.</option>
+                    <option value="USD">$</option>
+                    <option value="EUR">€</option>
+                    <option value="GBP">£</option>
+                  </select>
                   <input
                     type="number"
                     min="1"
                     step="100"
                     value={budgetLimit}
                     onChange={(e) => setBudgetLimit(e.target.value)}
-                    className="w-full pl-8 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
+                    className="w-full px-3 py-2.5 bg-white text-slate-900 text-sm focus:outline-none"
+                    placeholder="Enter budget limit"
                     required
                   />
                 </div>
@@ -156,19 +170,19 @@ export const CreateOrJoinRoomModal = ({
                       key={amt}
                       onClick={() => setBudgetLimit(amt)}
                       className={`text-xs px-2.5 py-1 rounded-lg border font-semibold transition ${
-                        budgetLimit === amt
+                        Number(budgetLimit) === amt
                           ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
                           : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-blue-300 hover:bg-blue-50'
                       }`}
                     >
-                      ₹{amt.toLocaleString('en-IN')}
+                      {CURRENCY_SYMBOLS[currency] || 'Rs. '}{amt.toLocaleString()}
                     </button>
                   ))}
                 </div>
               </div>
 
               <p className="text-[11px] text-slate-500 leading-relaxed">
-                As Host, you control the shared budget in rupees (₹), can invite members with your 6-digit room code, and finalize the checkout.
+                As Host, you control the shared budget limit, can invite members with your 6-character room code, and finalize the checkout.
               </p>
 
               <button

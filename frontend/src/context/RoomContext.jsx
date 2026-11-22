@@ -10,6 +10,13 @@ export const RoomProvider = ({ children }) => {
   const [activeRoomCode, setActiveRoomCode] = useState(() => {
     return localStorage.getItem('synccart_active_room') || null;
   });
+  const [currency, setCurrencyState] = useState(() => {
+    return localStorage.getItem('synccart_currency') || 'INR';
+  });
+  const setCurrency = (newCurr) => {
+    setCurrencyState(newCurr);
+    localStorage.setItem('synccart_currency', newCurr);
+  };
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -176,6 +183,8 @@ export const RoomProvider = ({ children }) => {
     <RoomContext.Provider
       value={{
         activeRoomCode,
+        currency,
+        setCurrency,
         room,
         loading,
         error,

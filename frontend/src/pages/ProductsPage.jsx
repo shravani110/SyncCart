@@ -115,7 +115,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
             <div>
               <span className="text-sm font-bold text-slate-900 block">No Active Shopping Room</span>
               <p className="text-xs text-slate-500">
-                Join or create a collaborative room to start adding shared items in ₹!
+                Join or create a collaborative room to start adding shared items!
               </p>
             </div>
           </div>
@@ -137,7 +137,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search products, groceries, electronics in ₹..."
+            placeholder="Search products, groceries, electronics..."
             className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-2xl text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs transition"
           />
         </div>

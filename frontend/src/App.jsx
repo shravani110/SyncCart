@@ -60,13 +60,8 @@ function AppContent() {
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500 shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© {new Date().getFullYear()} SyncCart — Collaborative Shopping System in Rupees (₹).</p>
-          <div className="flex items-center gap-4 text-slate-500">
-            <span>Spring Boot 3 + STOMP WebSockets</span>
-            <span>•</span>
-            <span>React + White & Blue Theme</span>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center">
+          <p>© {new Date().getFullYear()} SyncCart — Collaborative Shopping System.</p>
         </div>
       </footer>
 

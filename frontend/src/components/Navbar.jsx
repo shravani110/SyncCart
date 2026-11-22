@@ -7,7 +7,7 @@ import { formatCurrency, getInitials } from '../utils/formatters';
 
 export const Navbar = ({ onOpenRoomModal }) => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { room, isConnected, isHost } = useRoom();
+  const { room, isConnected, isHost, currency } = useRoom();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -111,7 +111,7 @@ export const Navbar = ({ onOpenRoomModal }) => {
                 </div>
                 <div className="h-3 w-px bg-blue-200"></div>
                 <span className="text-xs font-semibold text-slate-700">
-                  {formatCurrency(room.totalCartAmount)} / {formatCurrency(room.budgetLimit)}
+                  {formatCurrency(room.totalCartAmount, currency)} / {formatCurrency(room.budgetLimit, currency)}
                 </span>
                 {isHost && (
                   <span className="p-0.5 bg-amber-100 text-amber-700 rounded border border-amber-200" title="Host">

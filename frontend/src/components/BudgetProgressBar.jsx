@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { AlertTriangle, TrendingUp, Edit3, ShieldAlert } from 'lucide-react';
-import { formatCurrency, formatPercent } from '../utils/formatters';
+import { formatCurrency, formatPercent, CURRENCY_SYMBOLS } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newBudget, setNewBudget] = useState(room?.budgetLimit || 500);
+  const { currency, setCurrency } = useRoom();
 
   if (!room) return null;
 
@@ -57,7 +59,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
               </span>
             </h3>
             <p className="text-xs text-slate-500">
-              Live synchronized budget tracking in Indian Rupees (₹)
+              Live synchronized budget tracking for all members
             </p>
           </div>
         </div>
@@ -67,15 +69,25 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
           <div>
             {isEditing ? (
               <form onSubmit={handleSaveBudget} className="flex items-center gap-2">
-                <div className="relative">
-                  <span className="absolute left-3 top-2 text-slate-500 font-semibold text-sm">₹</span>
+                <div className="flex rounded-lg border border-slate-300 overflow-hidden shadow-2xs">
+                  <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="bg-slate-50 text-slate-800 text-xs font-bold px-2.5 py-1.5 border-r border-slate-300 focus:outline-none cursor-pointer"
+                    title="Select Currency"
+                  >
+                    <option value="INR">Rs.</option>
+                    <option value="USD">$</option>
+                    <option value="EUR">€</option>
+                    <option value="GBP">£</option>
+                  </select>
                   <input
                     type="number"
                     min="1"
                     step="50"
                     value={newBudget}
                     onChange={(e) => setNewBudget(e.target.value)}
-                    className="w-32 pl-7 pr-3 py-1.5 text-sm bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-28 px-2.5 py-1.5 text-sm bg-white text-slate-900 focus:outline-none"
                     placeholder="Limit"
                     autoFocus
                   />
@@ -126,7 +138,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
             <span className="font-bold text-rose-700">Over Budget Warning: </span>
             The total cart value exceeds the allocated room budget by{' '}
             <span className="font-bold underline text-rose-800">
-              {formatCurrency(Math.abs(remaining))}
+              {formatCurrency(Math.abs(remaining), currency)}
             </span>
             . Consider removing items or having the Host increase the budget limit.
           </div>
@@ -140,7 +152,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
             Cart Total
           </span>
           <span className={`text-base font-extrabold ${isExceeded ? 'text-rose-600' : 'text-slate-900'}`}>
-            {formatCurrency(total)}
+            {formatCurrency(total, currency)}
           </span>
         </div>
 
@@ -149,7 +161,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
             Room Budget
           </span>
           <span className="text-base font-extrabold text-slate-900">
-            {formatCurrency(budget)}
+            {formatCurrency(budget, currency)}
           </span>
         </div>
 
@@ -162,7 +174,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
               remaining >= 0 ? 'text-emerald-600' : 'text-rose-600'
             }`}
           >
-            {formatCurrency(Math.abs(remaining))}
+            {formatCurrency(Math.abs(remaining), currency)}
           </span>
         </div>
 
@@ -171,7 +183,7 @@ export const BudgetProgressBar = ({ room, isHost, onUpdateBudget }) => {
             Equal Split (per member)
           </span>
           <span className="text-base font-extrabold text-blue-600">
-            {formatCurrency(room.perMemberEqualSplit || 0)}
+            {formatCurrency(room.perMemberEqualSplit || 0, currency)}
           </span>
         </div>
       </div>

@@ -237,7 +237,7 @@ public class RoomService {
                 WebSocketMessage.MessageType.BUDGET_UPDATED,
                 currentUser.getUsername(),
                 currentUser.getFullName(),
-                "Budget updated to ₹" + request.getBudgetLimit(),
+                "Budget updated to " + request.getBudgetLimit(),
                 updatedDetails
         );
 

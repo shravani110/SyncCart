@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, Minus, Trash2, Lock } from 'lucide-react';
 import { formatCurrency, getInitials } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const CartItemRow = ({
   item,
@@ -9,6 +10,7 @@ export const CartItemRow = ({
   onUpdateQuantity,
   onRemoveItem,
 }) => {
+  const { currency } = useRoom();
   const isOwner = item.addedByUserId === currentUserId;
   const canModify = isHost || isOwner;
 
@@ -29,7 +31,7 @@ export const CartItemRow = ({
             {item.productName}
           </h4>
           <div className="text-xs text-slate-500 mt-1">
-            Unit Price: <span className="text-slate-800 font-semibold">{formatCurrency(item.unitPrice)}</span>
+            Unit Price: <span className="text-slate-800 font-semibold">{formatCurrency(item.unitPrice, currency)}</span>
           </div>
 
           {/* Added by Badge */}
@@ -83,7 +85,7 @@ export const CartItemRow = ({
         {/* Subtotal */}
         <div className="text-right min-w-[80px]">
           <span className="text-sm font-extrabold text-slate-900 block">
-            {formatCurrency(item.subtotal)}
+            {formatCurrency(item.subtotal, currency)}
           </span>
           <span className="text-[10px] text-slate-400 font-medium block">Subtotal</span>
         </div>

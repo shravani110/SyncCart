@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, CreditCard, MapPin, ShoppingBag, Sparkles, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { formatCurrency } from '../utils/formatters';
+import { useRoom } from '../context/RoomContext';
 
 export const CheckoutModal = ({
   isOpen,
@@ -14,6 +15,7 @@ export const CheckoutModal = ({
   const [paymentMethod, setPaymentMethod] = useState('SPLIT_PAY');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { currency } = useRoom();
 
   if (!isOpen || !room) return null;
 
@@ -58,7 +60,7 @@ export const CheckoutModal = ({
             </div>
             <div>
               <h3 className="text-lg font-black text-slate-900">Finalize Shared Order</h3>
-              <p className="text-xs text-slate-500">Review items & finalize group order (in ₹)</p>
+              <p className="text-xs text-slate-500">Review items & finalize group order</p>
             </div>
           </div>
           <button
@@ -187,7 +189,7 @@ export const CheckoutModal = ({
           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-sm">
             <div className="flex justify-between text-slate-600 text-xs font-medium">
               <span>Cart Subtotal</span>
-              <span className="text-slate-900 font-semibold">{formatCurrency(room.totalCartAmount)}</span>
+              <span className="text-slate-900 font-semibold">{formatCurrency(room.totalCartAmount, currency)}</span>
             </div>
             <div className="flex justify-between text-slate-600 text-xs font-medium">
               <span>Standard Shipping</span>
@@ -195,11 +197,11 @@ export const CheckoutModal = ({
             </div>
             <div className="flex justify-between text-slate-600 text-xs font-medium">
               <span>Estimated Tax</span>
-              <span className="text-slate-900 font-semibold">₹0.00</span>
+              <span className="text-slate-900 font-semibold">{formatCurrency(0, currency)}</span>
             </div>
             <div className="pt-2 border-t border-slate-200 flex justify-between text-base font-black text-slate-900">
               <span>Total Amount</span>
-              <span className="text-blue-600">{formatCurrency(room.totalCartAmount)}</span>
+              <span className="text-blue-600">{formatCurrency(room.totalCartAmount, currency)}</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Users, Zap, IndianRupee, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import { ShoppingBag, Users, Zap, Wallet, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useRoom } from '../context/RoomContext';
 
@@ -29,7 +29,7 @@ export const HomePage = ({ onOpenRoomModal }) => {
         <div className="relative max-w-3xl mx-auto text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-800 text-xs font-bold">
             <Sparkles className="w-4 h-4 text-blue-600" />
-            <span>Next-Generation Collaborative Shopping in Rupees (₹)</span>
+            <span>Next-Generation Collaborative Shopping</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-tight">
@@ -40,7 +40,7 @@ export const HomePage = ({ onOpenRoomModal }) => {
           </h1>
 
           <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Create a shared shopping room with friends or roommates. Add items, watch the shared cart update in real-time via WebSockets, and track your shared budget in ₹ with zero hassle.
+            Create a shared shopping room with friends or roommates. Add items, watch the shared cart update in real-time via WebSockets, and track your shared budget with zero hassle.
           </p>
 
           {/* Call to Actions */}
@@ -96,11 +96,11 @@ export const HomePage = ({ onOpenRoomModal }) => {
 
         <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs hover:border-blue-300 transition">
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center mb-4">
-            <IndianRupee className="w-6 h-6" />
+            <Wallet className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Shared Budget Tracking (₹)</h3>
+          <h3 className="text-lg font-bold text-slate-900 mb-2">Shared Budget Tracking</h3>
           <p className="text-sm text-slate-500 leading-relaxed">
-            Dynamic budget progress bar in Indian Rupees with proactive alerts when additions exceed your group spending limit.
+            Dynamic budget progress bar with proactive alerts when additions exceed your group spending limit.
           </p>
         </div>
 
@@ -131,7 +131,7 @@ export const HomePage = ({ onOpenRoomModal }) => {
             </div>
             <h4 className="text-base font-bold text-slate-900 mb-1">Create or Join Room</h4>
             <p className="text-xs text-slate-500 max-w-xs">
-              Host sets a budget in ₹ and gets a unique 6-character room code (e.g. <code>SYNC99</code>) to share with members.
+              Host sets a budget and gets a unique 6-character room code (e.g. <code>SYNC99</code>) to share with members.
             </p>
           </div>
 
@@ -151,7 +151,7 @@ export const HomePage = ({ onOpenRoomModal }) => {
             </div>
             <h4 className="text-base font-bold text-slate-900 mb-1">Split & Checkout</h4>
             <p className="text-xs text-slate-500 max-w-xs">
-              Review member split summaries in rupees, check equal split targets, and the Host places the combined order.
+              Review member split summaries, check equal split targets, and the Host places the combined order.
             </p>
           </div>
         </div>

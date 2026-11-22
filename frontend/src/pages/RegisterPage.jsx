@@ -58,7 +58,7 @@ export const RegisterPage = () => {
           </div>
           <h2 className="text-2xl font-black text-slate-900">Create Account</h2>
           <p className="text-xs text-slate-500 mt-1">
-            Join SyncCart to shop collaboratively in Rupees (₹)
+            Join SyncCart to shop collaboratively
           </p>
         </div>
 
