@@ -19,7 +19,7 @@ function AppContent() {
   const { createRoom, joinRoomByCode } = useRoom();
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans selection:bg-brand-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
       <Navbar onOpenRoomModal={() => setRoomModalOpen(true)} />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -59,13 +59,13 @@ function AppContent() {
         </Routes>
       </main>
 
-      <footer className="border-t border-slate-800 bg-slate-950/60 py-6 mt-12 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© {new Date().getFullYear()} SyncCart — Full Stack Collaborative Shopping System.</p>
-          <div className="flex items-center gap-4 text-slate-400">
+          <p>© {new Date().getFullYear()} SyncCart — Collaborative Shopping System in Rupees (₹).</p>
+          <div className="flex items-center gap-4 text-slate-500">
             <span>Spring Boot 3 + STOMP WebSockets</span>
             <span>•</span>
-            <span>React + Tailwind CSS</span>
+            <span>React + White & Blue Theme</span>
           </div>
         </div>
       </footer>

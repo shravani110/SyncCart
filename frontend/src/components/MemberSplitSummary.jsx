@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, User, ShoppingBag, UserMinus } from 'lucide-react';
+import { Crown, ShoppingBag, UserMinus } from 'lucide-react';
 import { formatCurrency, formatPercent, getInitials } from '../utils/formatters';
 
 export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember }) => {
@@ -10,17 +10,17 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
   const memberRoleMap = new Map(members.map((m) => [m.userId, m.roomRole]));
 
   return (
-    <div className="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-md">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             Member Contributions
-            <span className="text-xs bg-brand-500/10 text-brand-400 border border-brand-500/20 px-2 py-0.5 rounded-full font-medium">
+            <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-semibold">
               {contributions.length} Active
             </span>
           </h3>
-          <p className="text-xs text-slate-400">
-            Real-time individual spending breakdown & equal split analysis
+          <p className="text-xs text-slate-500">
+            Real-time individual spending breakdown & equal split analysis (in ₹)
           </p>
         </div>
       </div>
@@ -36,8 +36,8 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
               key={contrib.userId || contrib.username}
               className={`flex items-center justify-between p-3.5 rounded-xl border transition-all ${
                 isCurrentUser
-                  ? 'bg-brand-950/40 border-brand-500/40'
-                  : 'bg-slate-900/60 border-slate-700/50 hover:border-slate-600'
+                  ? 'bg-blue-50/70 border-blue-300'
+                  : 'bg-slate-50/80 border-slate-200 hover:border-slate-300'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -46,16 +46,16 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
                     <img
                       src={contrib.avatarUrl}
                       alt={contrib.fullName}
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-slate-700"
+                      className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-xs"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-sm font-semibold text-slate-200">
+                    <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-sm font-semibold text-slate-700">
                       {getInitials(contrib.fullName || contrib.username)}
                     </div>
                   )}
 
                   {isUserHost && (
-                    <span className="absolute -top-1 -right-1 bg-amber-500 text-slate-950 p-0.5 rounded-full ring-2 ring-slate-900" title="Room Host">
+                    <span className="absolute -top-1 -right-1 bg-amber-400 text-slate-900 p-0.5 rounded-full ring-2 ring-white shadow-xs" title="Room Host">
                       <Crown className="w-3 h-3 fill-current" />
                     </span>
                   )}
@@ -63,32 +63,32 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
 
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-bold text-slate-900">
                       {contrib.fullName || contrib.username}
                     </span>
                     {isCurrentUser && (
-                      <span className="text-[10px] bg-brand-500/20 text-brand-300 px-1.5 py-0.2 rounded font-semibold border border-brand-500/30">
+                      <span className="text-[10px] bg-blue-600 text-white px-1.5 py-0.2 rounded font-semibold">
                         You
                       </span>
                     )}
                     <span
-                      className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                         isUserHost
-                          ? 'bg-amber-400/10 text-amber-300 border border-amber-400/30'
-                          : 'bg-slate-700 text-slate-300'
+                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                          : 'bg-slate-200 text-slate-700'
                       }`}
                     >
                       {role}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5">
+                  <div className="flex items-center gap-3 text-xs text-slate-500 mt-0.5">
                     <span className="flex items-center gap-1">
-                      <ShoppingBag className="w-3 h-3" />
+                      <ShoppingBag className="w-3 h-3 text-slate-400" />
                       {contrib.itemsCount} {contrib.itemsCount === 1 ? 'item' : 'items'} added
                     </span>
                     <span>•</span>
-                    <span className="text-slate-300 font-medium">
+                    <span className="text-slate-700 font-semibold">
                       {formatPercent(contrib.percentageOfCart)} of cart
                     </span>
                   </div>
@@ -97,10 +97,10 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <div className="text-sm font-bold text-white">
+                  <div className="text-sm font-extrabold text-slate-900">
                     {formatCurrency(contrib.totalContribution)}
                   </div>
-                  <div className="text-[10px] text-slate-400">
+                  <div className="text-[10px] text-slate-500 font-medium">
                     Split share: {formatCurrency(room.perMemberEqualSplit)}
                   </div>
                 </div>
@@ -114,7 +114,7 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
                       }
                     }}
                     title="Remove member from room"
-                    className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
                   >
                     <UserMinus className="w-4 h-4" />
                   </button>

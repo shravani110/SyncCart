@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, PlusCircle, LogIn, Sparkles, DollarSign, AlertCircle } from 'lucide-react';
+import { X, PlusCircle, LogIn, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const CreateOrJoinRoomModal = ({
@@ -10,7 +10,7 @@ export const CreateOrJoinRoomModal = ({
 }) => {
   const [tab, setTab] = useState('create'); // 'create' | 'join'
   const [name, setName] = useState('');
-  const [budgetLimit, setBudgetLimit] = useState(500);
+  const [budgetLimit, setBudgetLimit] = useState(10000);
   const [roomCode, setRoomCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -58,15 +58,15 @@ export const CreateOrJoinRoomModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-slate-800 border border-slate-700 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in">
+      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col">
         {/* Header Tabs */}
-        <div className="p-6 pb-0 border-b border-slate-700/80">
+        <div className="p-6 pb-0 border-b border-slate-100">
           <div className="flex items-center justify-between pb-4">
-            <h3 className="text-lg font-bold text-white">Shopping Room</h3>
+            <h3 className="text-lg font-black text-slate-900">Shopping Room</h3>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition"
+              className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -81,8 +81,8 @@ export const CreateOrJoinRoomModal = ({
               }}
               className={`flex-1 pb-3 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition-all ${
                 tab === 'create'
-                  ? 'border-brand-500 text-brand-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-blue-600 text-blue-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-600'
               }`}
             >
               <PlusCircle className="w-4 h-4" />
@@ -96,8 +96,8 @@ export const CreateOrJoinRoomModal = ({
               }}
               className={`flex-1 pb-3 text-xs font-bold border-b-2 flex items-center justify-center gap-1.5 transition-all ${
                 tab === 'join'
-                  ? 'border-brand-500 text-brand-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-blue-600 text-blue-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-600'
               }`}
             >
               <LogIn className="w-4 h-4" />
@@ -109,8 +109,8 @@ export const CreateOrJoinRoomModal = ({
         {/* Content */}
         <div className="p-6">
           {error && (
-            <div className="mb-4 p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-300 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
+            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
@@ -118,7 +118,7 @@ export const CreateOrJoinRoomModal = ({
           {tab === 'create' ? (
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
                   Room Name
                 </label>
                 <input
@@ -126,55 +126,55 @@ export const CreateOrJoinRoomModal = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Weekend Party Groceries, Apartment Gear"
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
-                  Shared Budget Limit ($)
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  Shared Budget Limit (₹)
                 </label>
                 <div className="relative mb-2">
-                  <span className="absolute left-3.5 top-2.5 text-slate-400 text-sm">$</span>
+                  <span className="absolute left-3.5 top-2 text-slate-500 font-bold text-sm">₹</span>
                   <input
                     type="number"
                     min="1"
-                    step="10"
+                    step="100"
                     value={budgetLimit}
                     onChange={(e) => setBudgetLimit(e.target.value)}
-                    className="w-full pl-8 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full pl-8 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
                     required
                   />
                 </div>
 
                 {/* Quick Budget Chips */}
                 <div className="flex gap-2">
-                  {[200, 500, 1000, 2500].map((amt) => (
+                  {[1000, 5000, 10000, 25000].map((amt) => (
                     <button
                       type="button"
                       key={amt}
                       onClick={() => setBudgetLimit(amt)}
-                      className={`text-xs px-2.5 py-1 rounded-lg border transition ${
+                      className={`text-xs px-2.5 py-1 rounded-lg border font-semibold transition ${
                         budgetLimit === amt
-                          ? 'bg-brand-500/20 text-brand-300 border-brand-500/40'
-                          : 'bg-slate-900/60 text-slate-400 border-slate-700 hover:text-white'
+                          ? 'bg-blue-600 text-white border-blue-600 shadow-2xs'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-blue-300 hover:bg-blue-50'
                       }`}
                     >
-                      ${amt}
+                      ₹{amt.toLocaleString('en-IN')}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                As Host, you control the shared budget, can invite members with your 6-digit room code, and finalize the checkout.
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                As Host, you control the shared budget in rupees (₹), can invite members with your 6-digit room code, and finalize the checkout.
               </p>
 
               <button
                 type="submit"
                 disabled={loading || !name.trim()}
-                className="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-brand-600/30 transition disabled:opacity-50"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 transition disabled:opacity-50"
               >
                 {loading ? 'Creating Shopping Room...' : 'Create Room & Become Host'}
               </button>
@@ -182,7 +182,7 @@ export const CreateOrJoinRoomModal = ({
           ) : (
             <form onSubmit={handleJoin} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
                   6-Character Room Code
                 </label>
                 <input
@@ -191,21 +191,21 @@ export const CreateOrJoinRoomModal = ({
                   value={roomCode}
                   onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                   placeholder="e.g. SYNC99"
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-base font-mono tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-900 text-base font-mono tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
                   required
                 />
               </div>
 
               {/* Quick Demo Pill */}
-              <div className="p-3 bg-slate-900/70 border border-slate-700/60 rounded-xl text-xs flex items-center justify-between">
+              <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-xl text-xs flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-white block">Try Pre-seeded Demo Room</span>
-                  <span className="text-[11px] text-slate-400">Code: SYNC99</span>
+                  <span className="font-bold text-slate-900 block">Try Pre-seeded Demo Room</span>
+                  <span className="text-[11px] text-blue-700 font-mono font-bold">Code: SYNC99</span>
                 </div>
                 <button
                   type="button"
                   onClick={handleQuickDemoJoin}
-                  className="px-2.5 py-1 bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 rounded-lg text-xs font-semibold border border-brand-500/30 transition"
+                  className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-2xs transition"
                 >
                   Use Code
                 </button>
@@ -214,7 +214,7 @@ export const CreateOrJoinRoomModal = ({
               <button
                 type="submit"
                 disabled={loading || !roomCode.trim()}
-                className="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-brand-600/30 transition disabled:opacity-50"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 transition disabled:opacity-50"
               >
                 {loading ? 'Joining Room...' : 'Join Collaborative Room'}
               </button>

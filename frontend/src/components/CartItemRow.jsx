@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Minus, Trash2, User, Lock } from 'lucide-react';
+import { Plus, Minus, Trash2, Lock } from 'lucide-react';
 import { formatCurrency, getInitials } from '../utils/formatters';
 
 export const CartItemRow = ({
@@ -13,23 +13,23 @@ export const CartItemRow = ({
   const canModify = isHost || isOwner;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-900/60 hover:bg-slate-900/80 border border-slate-700/60 rounded-xl gap-4 transition-all group">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white hover:bg-blue-50/30 border border-slate-200/90 rounded-2xl gap-4 shadow-2xs transition-all group">
       {/* Product Image & Details */}
       <div className="flex items-center gap-3.5">
         <img
           src={item.productImageUrl}
           alt={item.productName}
-          className="w-16 h-16 rounded-xl object-cover bg-slate-800 border border-slate-700/80 flex-shrink-0"
+          className="w-16 h-16 rounded-xl object-cover bg-slate-50 border border-slate-200 flex-shrink-0 shadow-2xs"
         />
         <div>
-          <span className="text-[10px] font-semibold tracking-wider text-brand-400 uppercase">
+          <span className="text-[10px] font-bold tracking-wider text-blue-600 uppercase">
             {item.productCategory}
           </span>
-          <h4 className="text-sm font-semibold text-white leading-tight line-clamp-1">
+          <h4 className="text-sm font-bold text-slate-900 leading-tight line-clamp-1">
             {item.productName}
           </h4>
-          <div className="text-xs text-slate-400 mt-1">
-            Unit Price: <span className="text-slate-200 font-medium">{formatCurrency(item.unitPrice)}</span>
+          <div className="text-xs text-slate-500 mt-1">
+            Unit Price: <span className="text-slate-800 font-semibold">{formatCurrency(item.unitPrice)}</span>
           </div>
 
           {/* Added by Badge */}
@@ -38,16 +38,16 @@ export const CartItemRow = ({
               <img
                 src={item.addedByAvatarUrl}
                 alt={item.addedByFullName}
-                className="w-4 h-4 rounded-full object-cover"
+                className="w-4 h-4 rounded-full object-cover ring-1 ring-slate-200"
               />
             ) : (
-              <div className="w-4 h-4 rounded-full bg-slate-700 text-[8px] flex items-center justify-center text-slate-200">
+              <div className="w-4 h-4 rounded-full bg-blue-600 text-[8px] flex items-center justify-center text-white font-bold">
                 {getInitials(item.addedByFullName)}
               </div>
             )}
-            <span className="text-[11px] text-slate-400">
+            <span className="text-[11px] text-slate-500">
               Added by{' '}
-              <span className={`font-medium ${isOwner ? 'text-brand-300' : 'text-slate-300'}`}>
+              <span className={`font-semibold ${isOwner ? 'text-blue-700' : 'text-slate-700'}`}>
                 {isOwner ? 'You' : item.addedByFullName}
               </span>
             </span>
@@ -58,22 +58,22 @@ export const CartItemRow = ({
       {/* Quantity & Actions */}
       <div className="flex items-center justify-between sm:justify-end gap-5">
         {/* Quantity Controls */}
-        <div className="flex items-center bg-slate-800 border border-slate-700 rounded-lg p-1">
+        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1 shadow-2xs">
           <button
             disabled={!canModify || item.quantity <= 1}
             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-transparent transition"
+            className="p-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white disabled:opacity-40 disabled:hover:bg-transparent transition"
             title={canModify ? 'Decrease quantity' : 'Only Host or item owner can change quantity'}
           >
             <Minus className="w-3.5 h-3.5" />
           </button>
-          <span className="w-8 text-center text-xs font-bold text-white">
+          <span className="w-8 text-center text-xs font-bold text-slate-900">
             {item.quantity}
           </span>
           <button
             disabled={!canModify}
             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-            className="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700 disabled:opacity-40 disabled:hover:bg-transparent transition"
+            className="p-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white disabled:opacity-40 disabled:hover:bg-transparent transition"
             title={canModify ? 'Increase quantity' : 'Only Host or item owner can change quantity'}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -81,11 +81,11 @@ export const CartItemRow = ({
         </div>
 
         {/* Subtotal */}
-        <div className="text-right min-w-[70px]">
-          <span className="text-sm font-bold text-white block">
+        <div className="text-right min-w-[80px]">
+          <span className="text-sm font-extrabold text-slate-900 block">
             {formatCurrency(item.subtotal)}
           </span>
-          <span className="text-[10px] text-slate-400 block">Subtotal</span>
+          <span className="text-[10px] text-slate-400 font-medium block">Subtotal</span>
         </div>
 
         {/* Remove Button */}
@@ -93,14 +93,14 @@ export const CartItemRow = ({
           {canModify ? (
             <button
               onClick={() => onRemoveItem(item.id)}
-              className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+              className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
               title="Remove from shared cart"
             >
               <Trash2 className="w-4 h-4" />
             </button>
           ) : (
             <div
-              className="p-2 text-slate-600 cursor-not-allowed"
+              className="p-2 text-slate-300 cursor-not-allowed"
               title="Only Host or the member who added this item can remove it"
             >
               <Lock className="w-4 h-4" />
