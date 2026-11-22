@@ -12,22 +12,27 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
   const memberRoleMap = new Map(members.map((m) => [m.userId, m.roomRole]));
 
   return (
-    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
             Member Contributions
-            <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-semibold">
+            <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.2 rounded-full font-semibold">
               {contributions.length} Active
             </span>
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] text-slate-500">
             Real-time individual spending breakdown & equal split analysis
           </p>
         </div>
       </div>
 
-      <div className="space-y-3">
+      {contributions.length === 0 ? (
+        <div className="p-4 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl">
+          No member items yet. Individual split shares will compute automatically as items are added.
+        </div>
+      ) : (
+        <div className="space-y-2.5">
         {contributions.map((contrib) => {
           const isCurrentUser = contrib.userId === currentUserId;
           const role = memberRoleMap.get(contrib.userId) || (contrib.userId === room.hostId ? 'HOST' : 'MEMBER');
@@ -125,7 +130,8 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
             </div>
           );
         })}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

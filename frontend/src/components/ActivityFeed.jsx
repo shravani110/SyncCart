@@ -23,30 +23,30 @@ const formatTime = (ts) => {
 
 export const ActivityFeed = ({ activities = [] }) => {
   return (
-    <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center flex-shrink-0">
-          <Clock3 className="w-5 h-5" />
+    <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex flex-col">
+      <div className="flex items-center gap-3 mb-3 pb-2 border-b border-slate-100">
+        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center flex-shrink-0">
+          <Clock3 className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
             Activity Feed
-            <span className="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">
+            <span className="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.2 rounded-full font-bold">
               LIVE
             </span>
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] text-slate-500">
             Real-time room synchronization logs
           </p>
         </div>
       </div>
 
-      <div className="space-y-2.5 flex-1 overflow-y-auto max-h-[380px] pr-1">
+      <div className="space-y-2 overflow-y-auto max-h-[220px] pr-1">
         {activities.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center text-slate-400 text-xs">
-            <Sparkles className="w-6 h-6 mx-auto mb-2 text-slate-300" />
+          <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center text-slate-400 text-xs">
+            <Sparkles className="w-5 h-5 mx-auto mb-1.5 text-slate-300" />
             <p className="font-semibold text-slate-600">No activity yet</p>
-            <p className="mt-0.5">Live cart edits and budget updates will appear here instantly.</p>
+            <p className="mt-0.5 text-[11px]">Live cart edits and budget updates will appear here instantly.</p>
           </div>
         ) : (
           activities.map((entry, idx) => (

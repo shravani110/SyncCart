@@ -132,13 +132,13 @@ export const RoomPage = () => {
   const cartItems = room.cartItems || [];
 
   return (
-    <div className="space-y-8 py-6">
+    <div className="space-y-4 py-2 sm:py-3">
       {/* Live STOMP Event Notification Banner */}
       {liveNotification && (
-        <div className="p-4 bg-blue-50/90 border border-blue-200 rounded-2xl shadow-sm flex items-center justify-between gap-4 animate-fade-in">
+        <div className="p-3 bg-blue-50/90 border border-blue-200 rounded-2xl shadow-sm flex items-center justify-between gap-4 animate-fade-in">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 text-white rounded-xl">
-              <Sparkles className="w-5 h-5 animate-pulse" />
+            <div className="p-1.5 bg-blue-600 text-white rounded-lg">
+              <Sparkles className="w-4 h-4 animate-pulse" />
             </div>
             <div>
               <p className="text-xs font-bold text-slate-900">{liveNotification.message}</p>
@@ -162,24 +162,24 @@ export const RoomPage = () => {
       />
 
       {/* Main Grid: Cart Items (Left 2 cols) & Split Summary (Right 1 col) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
         {/* Left: Synchronized Cart Items */}
-        <div className="lg:col-span-2 flex flex-col h-full">
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm flex-1 flex flex-col">
+        <div className="lg:col-span-2 flex flex-col">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm flex flex-col">
             {/* Header */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-xl">
-                  <ShoppingBag className="w-5 h-5" />
+                <div className="p-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-xl">
+                  <ShoppingBag className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                     Synchronized Cart Items
-                    <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-bold">
+                    <span className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.2 rounded-full font-bold">
                       {cartItems.length}
                     </span>
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-[11px] text-slate-500">
                     Items added by any member update here live
                   </p>
                 </div>
@@ -211,18 +211,18 @@ export const RoomPage = () => {
 
             {/* Cart Items List */}
             {cartItems.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center py-16 text-center space-y-3">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 mx-auto flex items-center justify-center shadow-2xs">
-                  <ShoppingBag className="w-7 h-7" />
+              <div className="flex flex-col items-center justify-center py-10 sm:py-14 text-center space-y-2.5">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 mx-auto flex items-center justify-center shadow-2xs">
+                  <ShoppingBag className="w-6 h-6" />
                 </div>
                 <h4 className="text-base font-bold text-slate-900">Your room cart is empty</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
                   Browse the catalog and add products. Every item you add will appear instantly on everyone's screen!
                 </p>
-                <div className="pt-2">
+                <div className="pt-1.5">
                   <Link
                     to="/products"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-blue-500/20"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-blue-500/20"
                   >
                     <span>Browse Catalog</span>
                     <ArrowRight className="w-4 h-4" />
@@ -285,7 +285,7 @@ export const RoomPage = () => {
         </div>
 
         {/* Right: Member Contributions & Activity Feed & Room Actions */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           <MemberSplitSummary
             room={room}
             currentUserId={user?.id}
@@ -297,34 +297,34 @@ export const RoomPage = () => {
           <ActivityFeed activities={activityFeed} />
 
           {/* Room Controls Card */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm space-y-3">
             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Room Settings & Permissions
             </h4>
 
-            <div className="space-y-2.5 text-xs">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+            <div className="space-y-2 text-xs">
+              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                 <span className="text-slate-500 font-medium">Your Room Role</span>
                 <span className={`font-bold px-2 py-0.5 rounded-full ${isHost ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-blue-100 text-blue-800 border border-blue-200'}`}>
                   {isHost ? 'Host (Admin)' : 'Member'}
                 </span>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                 <span className="text-slate-500 font-medium">Total Active Members</span>
                 <span className="font-bold text-slate-900">{room.members?.length || 1}</span>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                 <span className="text-slate-500 font-medium">Room Status</span>
                 <span className="font-bold text-emerald-700">{room.status}</span>
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 onClick={handleLeaveRoom}
-                className="w-full py-2.5 text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 hover:border-rose-200 flex items-center justify-center gap-1.5 transition"
+                className="w-full py-2 text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 hover:border-rose-200 flex items-center justify-center gap-1.5 transition"
               >
                 <DoorOpen className="w-4 h-4" />
                 <span>Leave Shopping Room</span>
