@@ -65,7 +65,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
   };
 
   return (
-    <div className="space-y-8 py-6">
+    <div className="space-y-4 sm:space-y-8 py-3 sm:py-6">
       {/* Live Toast Banner if someone in the room added/removed items */}
       {liveNotification && room && (
         <div className="fixed bottom-6 right-6 z-50 p-4 bg-white border border-blue-300 rounded-2xl shadow-xl flex items-center gap-3 animate-fade-in max-w-sm">
@@ -81,20 +81,20 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
 
       {/* Active Room Header Pill */}
       {room ? (
-        <div className="bg-blue-50/80 border border-blue-200/90 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600 text-white rounded-xl shadow-xs">
-              <Users className="w-5 h-5" />
+        <div className="bg-blue-50/80 border border-blue-200/90 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 shadow-2xs">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-blue-600 text-white rounded-lg sm:rounded-xl shadow-xs">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 font-medium">Active Collaborative Room:</span>
-                <span className="text-sm font-black text-slate-900">{room.name}</span>
-                <span className="text-xs font-mono font-bold bg-white text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full shadow-2xs">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Active Room:</span>
+                <span className="text-xs sm:text-sm font-black text-slate-900">{room.name}</span>
+                <span className="text-[10px] sm:text-xs font-mono font-bold bg-white text-blue-700 border border-blue-200 px-1.5 sm:px-2 py-0.5 rounded-full shadow-2xs">
                   #{room.roomCode}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5">
                 Any item you add will instantly sync to all {room.members?.length || 1} room members
               </p>
             </div>
@@ -102,28 +102,28 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
 
           <Link
             to={`/room/${room.roomCode}`}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold shadow-md shadow-blue-500/20 flex items-center gap-1.5 transition"
           >
-            <ShoppingBag className="w-4 h-4" />
+            <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Open Room Cart ({room.cartItems?.length || 0})</span>
           </Link>
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl">
-              <AlertCircle className="w-5 h-5" />
+        <div className="bg-white border border-slate-200 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 shadow-2xs">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg sm:rounded-xl">
+              <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <span className="text-sm font-bold text-slate-900 block">No Active Shopping Room</span>
-              <p className="text-xs text-slate-500">
+              <span className="text-xs sm:text-sm font-bold text-slate-900 block">No Active Shopping Room</span>
+              <p className="text-[10px] sm:text-xs text-slate-500">
                 Join or create a collaborative room to start adding shared items!
               </p>
             </div>
           </div>
           <button
             onClick={onOpenRoomModal}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold shadow-md shadow-blue-500/20 transition"
           >
             Create / Join Room
           </button>
@@ -131,24 +131,24 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
       )}
 
       {/* Search & Filter Header */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+      <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 justify-between items-stretch sm:items-center">
         {/* Search Bar */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 sm:top-3 w-4 h-4 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products, groceries, electronics..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-2xl text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs transition"
+            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 bg-white border border-slate-300 rounded-xl sm:rounded-2xl text-slate-900 text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs transition"
           />
         </div>
 
         {/* Category Filters */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0">
           <button
             onClick={() => setSelectedCategory('')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold whitespace-nowrap transition ${
               selectedCategory === ''
                 ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                 : 'bg-white text-slate-700 hover:text-blue-600 hover:bg-slate-50 border border-slate-200'
@@ -160,7 +160,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold whitespace-nowrap transition ${
                 selectedCategory === cat
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                   : 'bg-white text-slate-700 hover:text-blue-600 hover:bg-slate-50 border border-slate-200'
@@ -172,7 +172,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Products Grid - 2 columns on mobile, 2 on sm, 3 on lg, 4 on xl */}
       {loading ? (
         <div className="min-h-[40vh] flex flex-col items-center justify-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
@@ -187,7 +187,7 @@ export const ProductsPage = ({ onOpenRoomModal }) => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6">
           {products.map((product) => (
             <ProductCard
               key={product.id}

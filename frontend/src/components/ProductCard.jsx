@@ -41,7 +41,7 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
       className="bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-blue-400 transition-all duration-300 flex flex-col group cursor-pointer relative"
     >
       {/* Product Image */}
-      <div className="relative h-48 w-full overflow-hidden bg-slate-50">
+      <div className="relative h-32 sm:h-48 w-full overflow-hidden bg-slate-50">
         <img
           src={product.imageUrl}
           alt={product.name}
@@ -52,22 +52,22 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
             e.target.src = FALLBACK_IMAGE;
           }}
         />
-        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-blue-700 border border-slate-200/80 shadow-2xs">
+        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-white/95 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-bold text-blue-700 border border-slate-200/80 shadow-2xs">
           {product.category || 'Groceries'}
         </div>
         {product.unit && (
-          <div className="absolute bottom-2.5 left-3 bg-slate-900/80 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-bold text-white shadow-2xs">
+          <div className="absolute bottom-1.5 sm:bottom-2.5 left-2 sm:left-3 bg-slate-900/80 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold text-white shadow-2xs">
             {product.unit}
           </div>
         )}
-        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2 py-1 rounded-full text-xs font-bold text-amber-700 flex items-center gap-1 border border-slate-200/80 shadow-2xs">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-white/95 backdrop-blur-md px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold text-amber-700 flex items-center gap-1 border border-slate-200/80 shadow-2xs">
+          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400" />
           <span>{product.rating || 4.8}</span>
         </div>
 
         {/* Hover Quick View Pill */}
         <div className="absolute inset-0 bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-          <span className="px-3 py-1.5 bg-white/95 backdrop-blur-md text-blue-700 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
+          <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md text-blue-700 rounded-full text-[10px] sm:text-xs font-bold flex items-center gap-1.5 shadow-lg">
             <Eye className="w-3.5 h-3.5" />
             <span>Click to view details</span>
           </span>
@@ -75,36 +75,36 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
       </div>
 
       {/* Body */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
+      <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+          <h3 className="text-xs sm:text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
-          <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+          <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1 line-clamp-2 leading-tight sm:leading-relaxed">
             {product.description}
           </p>
         </div>
 
         <div
-          className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between"
+          className="mt-2.5 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-100 flex items-center justify-between gap-1"
           onClick={(e) => e.stopPropagation()}
         >
           <div>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Price</span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-xl font-black text-slate-900">
+            <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Price</span>
+            <div className="flex items-baseline gap-0.5">
+              <span className="text-xs sm:text-xl font-black text-slate-900">
                 {formatCurrency(product.price, currency)}
               </span>
               {product.unit && (
-                <span className="text-[11px] text-slate-400 font-medium">
-                  / {product.unit}
+                <span className="text-[9px] sm:text-[11px] text-slate-400 font-medium">
+                  /{product.unit}
                 </span>
               )}
             </div>
           </div>
 
           {/* Quantity selector */}
-          <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-0.5">
+          <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl p-0.5">
             <button
               type="button"
               onClick={(e) => {
@@ -112,12 +112,12 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
                 setQuantity((q) => Math.max(1, q - 1));
               }}
               disabled={quantity <= 1 || disabled}
-              className="p-1 rounded-lg text-slate-500 hover:text-blue-600 disabled:opacity-30 transition"
+              className="p-0.5 sm:p-1 rounded-md text-slate-500 hover:text-blue-600 disabled:opacity-30 transition"
               title="Decrease quantity"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             </button>
-            <span className="w-6 text-center text-xs font-bold text-slate-900">
+            <span className="w-4 sm:w-6 text-center text-[10px] sm:text-xs font-bold text-slate-900">
               {quantity}
             </span>
             <button
@@ -127,10 +127,10 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
                 setQuantity((q) => q + 1);
               }}
               disabled={disabled}
-              className="p-1 rounded-lg text-slate-500 hover:text-blue-600 transition"
+              className="p-0.5 sm:p-1 rounded-md text-slate-500 hover:text-blue-600 transition"
               title="Increase quantity"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             </button>
           </div>
         </div>
@@ -140,23 +140,24 @@ export const ProductCard = ({ product, onAddToCart, onSelectProduct, disabled = 
           type="button"
           onClick={handleAdd}
           disabled={disabled || loading}
-          className={`w-full mt-3.5 py-2.5 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+          className={`w-full mt-2 sm:mt-3.5 py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all ${
             added
               ? 'bg-emerald-600 text-white shadow-emerald-500/25'
               : 'bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white shadow-md shadow-blue-500/25'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           {loading ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : added ? (
             <>
-              <Check className="w-4 h-4" />
-              <span>Added to Room Cart!</span>
+              <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+              <span className="truncate">Added!</span>
             </>
           ) : (
             <>
-              <ShoppingCart className="w-4 h-4" />
-              <span>Add to Room Cart</span>
+              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+              <span className="truncate sm:hidden">Add to Cart</span>
+              <span className="hidden sm:inline">Add to Room Cart</span>
             </>
           )}
         </button>
