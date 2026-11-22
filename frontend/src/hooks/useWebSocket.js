@@ -2,7 +2,17 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'http://localhost:8080/ws-synccart';
+const rawWsUrl = import.meta.env.VITE_WS_URL || '';
+const rawApiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL || '';
+
+let WS_BASE_URL = 'http://localhost:8080/ws-synccart';
+if (rawWsUrl) {
+  const cleaned = rawWsUrl.replace(/\/+$/, '');
+  WS_BASE_URL = cleaned.endsWith('/ws-synccart') ? cleaned : `${cleaned}/ws-synccart`;
+} else if (rawApiUrl) {
+  const cleaned = rawApiUrl.replace(/\/+$/, '').replace(/\/api$/, '');
+  WS_BASE_URL = `${cleaned}/ws-synccart`;
+}
 
 export const useWebSocket = (roomCode, onMessageReceived) => {
   const [isConnected, setIsConnected] = useState(false);
