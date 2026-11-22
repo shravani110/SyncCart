@@ -55,28 +55,33 @@ export const OrderConfirmationPage = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-4 space-y-8 animate-fade-in">
-      {/* Success Banner */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-8 text-center space-y-3 shadow-2xs">
-        <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto ring-4 ring-emerald-50">
-          <CheckCircle2 className="w-10 h-10" />
+    <div className="max-w-5xl xl:max-w-6xl w-full mx-auto py-6 px-4 space-y-5 animate-fade-in">
+      {/* Success Banner - Wide Rectangular Layout */}
+      <div className="bg-emerald-50/90 border border-emerald-200 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-4 text-center md:text-left">
+          <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0 ring-4 ring-emerald-50">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+              Group Order Confirmed!
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+              The collaborative cart was checked out. A confirmation receipt has been generated for all room members.
+            </p>
+          </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-          Group Order Confirmed!
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
-          The collaborative cart was checked out. A confirmation receipt has been generated for all room members.
-        </p>
-        <div className="pt-2 inline-flex items-center gap-2 px-3 py-1 bg-white border border-emerald-200 rounded-full text-xs font-mono font-bold text-emerald-800 shadow-2xs">
+
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-emerald-200 rounded-full text-xs font-mono font-bold text-emerald-800 shadow-2xs flex-shrink-0">
           <span>Order #{order.orderNumber}</span>
           <span>•</span>
           <span className="text-slate-500">Room: {order.roomCode}</span>
         </div>
       </div>
 
-      {/* Order Details Card */}
-      <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-6 border-b border-slate-100 text-xs">
+      {/* Order Details Card - Wide Rectangular Multi-Column Layout */}
+      <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 shadow-sm space-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-slate-100 text-xs">
           <div>
             <span className="text-slate-400 font-medium block mb-1">Host Organizer</span>
             <span className="font-bold text-slate-900 text-sm">{order.hostFullName}</span>
@@ -96,40 +101,41 @@ export const OrderConfirmationPage = () => {
           </div>
         </div>
 
-        {/* Items Table */}
-        <div>
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-            Purchased Items ({order.items?.length || 0})
-          </h3>
-          <div className="space-y-2">
-            {order.items?.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between p-3 bg-slate-50 rounded-xl text-xs border border-slate-200/80"
-              >
-                <div>
-                  <span className="font-bold text-slate-900 block">{item.productName}</span>
-                  <span className="text-[11px] text-slate-500">
-                    Added by: <strong className="text-blue-700">{item.addedByFullName}</strong> • Qty: {item.quantity} × {formatCurrency(item.unitPrice, currency)}
-                  </span>
-                </div>
-                <span className="font-extrabold text-slate-900">{formatCurrency(item.subtotal, currency)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Member Contribution Breakdown */}
-        {order.contributions?.length > 0 && (
+        {/* 2-Column Grid on Wide Screens for Items & Member Share */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Purchased Items */}
           <div>
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+              Purchased Items ({order.items?.length || 0})
+            </h3>
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              {order.items?.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl text-xs border border-slate-200/80"
+                >
+                  <div className="min-w-0 pr-2">
+                    <span className="font-bold text-slate-900 block truncate">{item.productName}</span>
+                    <span className="text-[11px] text-slate-500">
+                      Added by: <strong className="text-blue-700">{item.addedByFullName}</strong> • Qty: {item.quantity} × {formatCurrency(item.unitPrice, currency)}
+                    </span>
+                  </div>
+                  <span className="font-extrabold text-slate-900 whitespace-nowrap">{formatCurrency(item.subtotal, currency)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Member Contribution Breakdown */}
+          <div>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
               Member Share Breakdown
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {order.contributions.map((c) => (
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              {order.contributions?.map((c) => (
                 <div
                   key={c.username}
-                  className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between text-xs"
+                  className="p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between text-xs"
                 >
                   <div>
                     <span className="font-bold text-slate-900 block">{c.fullName}</span>
@@ -137,14 +143,14 @@ export const OrderConfirmationPage = () => {
                       {c.itemsCount} items • {c.percentageOfCart}% of total
                     </span>
                   </div>
-                  <span className="font-extrabold text-emerald-700">
+                  <span className="font-extrabold text-emerald-700 whitespace-nowrap">
                     {formatCurrency(c.totalContribution, currency)}
                   </span>
                 </div>
               ))}
             </div>
           </div>
-        )}
+        </div>
 
         {/* Order Totals */}
         <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
@@ -156,17 +162,17 @@ export const OrderConfirmationPage = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap items-center justify-center gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
         <Link
           to="/products"
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 flex items-center gap-2 transition"
+          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 flex items-center gap-2 transition"
         >
           <span>Continue Shopping</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
         <Link
           to="/orders"
-          className="px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold border border-slate-300 shadow-2xs transition"
+          className="px-6 py-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold border border-slate-300 shadow-2xs transition"
         >
           View My Orders
         </Link>

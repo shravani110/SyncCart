@@ -84,26 +84,26 @@ export const MemberSplitSummary = ({ room, currentUserId, isHost, onRemoveMember
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-500 mt-0.5">
-                    <span className="flex items-center gap-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-500 mt-0.5">
+                    <span className="flex items-center gap-1 whitespace-nowrap">
                       <ShoppingBag className="w-3 h-3 text-slate-400" />
                       {contrib.itemsCount} {contrib.itemsCount === 1 ? 'item' : 'items'} added
                     </span>
-                    <span>•</span>
-                    <span className="text-slate-700 font-semibold">
+                    <span className="text-slate-300">•</span>
+                    <span className="text-slate-700 font-semibold whitespace-nowrap">
                       {formatPercent(contrib.percentageOfCart)} of cart
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <div className="text-sm font-extrabold text-slate-900">
+              <div className="flex items-center gap-3 flex-shrink-0 ml-3">
+                <div className="text-right whitespace-nowrap">
+                  <div className="text-sm sm:text-base font-extrabold text-slate-900 leading-tight">
                     {formatCurrency(contrib.totalContribution, currency)}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-medium">
-                    Split share: {formatCurrency(room.perMemberEqualSplit, currency)}
+                  <div className="text-[11px] text-slate-500 font-medium whitespace-nowrap mt-0.5">
+                    Split share: <span className="font-semibold text-slate-700">{formatCurrency(room.perMemberEqualSplit, currency)}</span>
                   </div>
                 </div>
 

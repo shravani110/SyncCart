@@ -121,14 +121,14 @@ export const Navbar = ({ onOpenRoomModal }) => {
               </Link>
             ) : null}
 
-            {/* Room Button */}
-            {isAuthenticated && (
+            {/* Create/Join Room Button (only shown when not in a room) */}
+            {isAuthenticated && !room && (
               <button
                 onClick={onOpenRoomModal}
-                className="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold border border-slate-300 hover:border-blue-300 flex items-center gap-1.5 shadow-2xs transition"
+                className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-500/25 transition"
               >
-                <Plus className="w-3.5 h-3.5 text-blue-600" />
-                <span>{room ? 'Change Room' : 'Join / Create Room'}</span>
+                <Plus className="w-3.5 h-3.5 text-white" />
+                <span>Join / Create Room</span>
               </button>
             )}
 

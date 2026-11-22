@@ -3,6 +3,8 @@ import { ShoppingCart, Star, Check, Plus, Minus } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { useRoom } from '../context/RoomContext';
 
+const FALLBACK_IMAGE = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23f8fafc%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22130%22%20r%3D%2236%22%20fill%3D%22%23e2e8f0%22%2F%3E%3Cpath%20d%3D%22M190%20120h20v20h-20z%22%20fill%3D%22%2394a3b8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22190%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%2364748b%22%20font-weight%3D%22600%22%20font-size%3D%2213%22%20font-family%3D%22sans-serif%22%3ESyncCart%20Product%3C%2Ftext%3E%3C%2Fsvg%3E";
+
 export const ProductCard = ({ product, onAddToCart, disabled = false }) => {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -37,7 +39,7 @@ export const ProductCard = ({ product, onAddToCart, disabled = false }) => {
           loading="lazy"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&auto=format&fit=crop&q=80';
+            e.target.src = FALLBACK_IMAGE;
           }}
         />
         <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-blue-700 border border-slate-200/80 shadow-2xs">
