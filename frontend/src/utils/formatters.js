@@ -31,11 +31,20 @@ export const getInitials = (name) => {
 
 export const formatDate = (dateString) => {
   if (!dateString) return '';
-  const date = new Date(dateString);
+  let iso = String(dateString).trim();
+  // If the server string is an ISO timestamp without timezone offset, append 'Z' (UTC)
+  // so the browser converts it to the user's local timezone (e.g. IST).
+  if (iso.includes('T') && !iso.endsWith('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
+    iso = `${iso}Z`;
+  }
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return String(dateString);
+
   return date.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: true,
   });
 };

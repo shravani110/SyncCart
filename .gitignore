@@ -19,6 +19,8 @@ backend/.settings/
 backend/bin/
 *.log
 backend/synccartdb.*
+backend/data/
+data/
 
 # Frontend / Node / Vite
 frontend/node_modules/

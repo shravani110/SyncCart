@@ -16,9 +16,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByHostOrderByCreatedAtDesc(User host);
     List<Order> findByRoomCodeOrderByCreatedAtDesc(String roomCode);
 
-    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN o.items i WHERE o.host = :user OR i.addedByUser = :user OR o.roomCode IN :roomCodes ORDER BY o.createdAt DESC")
-    List<Order> findOrdersForUserWithRooms(@Param("user") User user, @Param("roomCodes") List<String> roomCodes);
+    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN o.items i WHERE o.host = :user OR i.addedByUser = :user OR LOWER(o.host.username) = LOWER(:username) OR LOWER(i.addedByUser.username) = LOWER(:username) OR o.roomCode IN :roomCodes ORDER BY o.createdAt DESC")
+    List<Order> findOrdersForUserWithRooms(@Param("user") User user, @Param("username") String username, @Param("roomCodes") List<String> roomCodes);
 
-    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN o.items i WHERE o.host = :user OR i.addedByUser = :user ORDER BY o.createdAt DESC")
-    List<Order> findOrdersForUser(@Param("user") User user);
+    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN o.items i WHERE o.host = :user OR i.addedByUser = :user OR LOWER(o.host.username) = LOWER(:username) OR LOWER(i.addedByUser.username) = LOWER(:username) ORDER BY o.createdAt DESC")
+    List<Order> findOrdersForUser(@Param("user") User user, @Param("username") String username);
 }

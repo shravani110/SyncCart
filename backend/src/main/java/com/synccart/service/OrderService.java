@@ -136,11 +136,12 @@ public class OrderService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
+        String username = user.getUsername();
         List<Order> orders;
         if (roomCodes.isEmpty()) {
-            orders = orderRepository.findOrdersForUser(user);
+            orders = orderRepository.findOrdersForUser(user, username);
         } else {
-            orders = orderRepository.findOrdersForUserWithRooms(user, roomCodes);
+            orders = orderRepository.findOrdersForUserWithRooms(user, username, roomCodes);
         }
 
         return orders.stream()
