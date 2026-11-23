@@ -51,13 +51,19 @@ export const RoomProvider = ({ children }) => {
       setActivityFeed((prev) => [newEntry, ...prev.filter((e) => e.message !== msg.message)].slice(0, 30));
     }
 
-    // If message contains updated room details payload
-    if (msg.payload && typeof msg.payload === 'object' && msg.payload.roomCode) {
-      setRoom(msg.payload);
-    } else if (msg.type === 'CHECKOUT_COMPLETED' && msg.payload) {
-      // If room just completed checkout, update room status and store completed order for instant member redirect
-      setRoom((prev) => prev ? { ...prev, status: 'CHECKED_OUT', cartItems: [], totalCartAmount: 0 } : null);
+    // CHECKOUT_COMPLETED must be handled FIRST so orderDto is not mistaken for a room payload
+    if (msg.type === 'CHECKOUT_COMPLETED' && msg.payload) {
+      setRoom((prev) => (prev ? { ...prev, status: 'CHECKED_OUT', cartItems: [], totalCartAmount: 0 } : null));
       setCompletedOrder(msg.payload);
+      try {
+        sessionStorage.setItem('synccart_latest_order', JSON.stringify(msg.payload));
+      } catch (e) {}
+      return;
+    }
+
+    // If message contains updated room details payload (must not be an order payload)
+    if (msg.payload && typeof msg.payload === 'object' && msg.payload.roomCode && !msg.payload.orderNumber) {
+      setRoom(msg.payload);
     } else {
       // Fallback: fetch latest room state
       if (activeRoomCode) {
@@ -193,7 +199,34 @@ export const RoomProvider = ({ children }) => {
     return order;
   };
 
-  const isHost = room && user && (room.hostId === user.id || room.currentUserRole === 'HOST');
+  // Accurately determine the logged-in user's membership and host status
+  const currentMember = useMemo(() => {
+    if (!room || !user) return null;
+    const uid = user.id != null ? Number(user.id) : null;
+    return (
+      room.members?.find((m) => {
+        if (uid !== null && m.userId != null && Number(m.userId) === uid) return true;
+        if (m.username && user.username && m.username.toLowerCase() === user.username.toLowerCase()) return true;
+        return false;
+      }) || null
+    );
+  }, [room?.members, user?.id, user?.username]);
+
+  const isHost = useMemo(() => {
+    if (!room || !user) return false;
+    const hostId = room.hostId != null ? Number(room.hostId) : null;
+    const userId = user.id != null ? Number(user.id) : null;
+    if (hostId !== null && userId !== null && hostId === userId) {
+      return true;
+    }
+    if (room.hostUsername && user.username && room.hostUsername.toLowerCase() === user.username.toLowerCase()) {
+      return true;
+    }
+    if (currentMember && currentMember.roomRole === 'HOST') {
+      return true;
+    }
+    return false;
+  }, [room?.hostId, room?.hostUsername, user?.id, user?.username, currentMember]);
 
   return (
     <RoomContext.Provider
@@ -206,6 +239,7 @@ export const RoomProvider = ({ children }) => {
         error,
         isConnected,
         isHost,
+        currentMember,
         liveNotification,
         activityFeed,
         enterRoom,

@@ -175,6 +175,14 @@ public class OrderService {
         }
         dto.setItems(itemDtos);
 
+        // Ensure Host is always present in contributions map
+        String hostUname = order.getHost().getUsername();
+        if (!memberContributions.containsKey(hostUname)) {
+            memberContributions.put(hostUname, BigDecimal.ZERO);
+            memberFullNames.put(hostUname, order.getHost().getFullName());
+            memberCounts.put(hostUname, 0);
+        }
+
         BigDecimal total = order.getTotalAmount();
         String paymentMethod = order.getPaymentMethod() != null ? order.getPaymentMethod() : "SPLIT_PAY";
         List<MemberContributionDto> contributions = new ArrayList<>();

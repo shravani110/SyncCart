@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle2, ArrowRight, UserCheck, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ArrowRight, UserCheck, CreditCard } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { orderApi } from '../api/orderApi';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { useRoom } from '../context/RoomContext';
@@ -11,12 +12,41 @@ export const OrderConfirmationPage = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [paidShare, setPaidShare] = useState(false);
   const { currency } = useRoom();
   const { user } = useAuth();
 
   const currentUsername = user?.username;
-  const isHost = order && user && (order.hostUsername === user.username || order.hostId === user.id);
-  const myContribution = order?.contributions?.find((c) => c.username === currentUsername);
+  const isHost = order && user && (
+    (order.hostUsername && user.username && order.hostUsername.toLowerCase() === user.username.toLowerCase()) ||
+    (order.hostId && user.id && Number(order.hostId) === Number(user.id))
+  );
+  const myContribution = order?.contributions?.find(
+    (c) => c.username && currentUsername && c.username.toLowerCase() === currentUsername.toLowerCase()
+  );
+
+  useEffect(() => {
+    if (orderNumber && user?.id) {
+      const isPaid = localStorage.getItem(`synccart_paid_${orderNumber}_${user.id}`);
+      if (isPaid === 'true') {
+        setPaidShare(true);
+      }
+    }
+  }, [orderNumber, user?.id]);
+
+  const handlePayShare = () => {
+    if (orderNumber && user?.id) {
+      localStorage.setItem(`synccart_paid_${orderNumber}_${user.id}`, 'true');
+      setPaidShare(true);
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 60,
+          origin: { y: 0.6 },
+        });
+      } catch (e) {}
+    }
+  };
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -88,7 +118,7 @@ export const OrderConfirmationPage = () => {
       <div className="flex-1 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 shadow-sm flex flex-col justify-between gap-3 sm:gap-5 min-h-0">
         {/* Personalized Member Share Status */}
         {user && (
-          <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-xs sm:text-sm flex items-center justify-between gap-3 shadow-2xs bg-blue-50/80 border-blue-200 text-blue-950 flex-shrink-0">
+          <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-xs sm:text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs bg-blue-50/80 border-blue-200 text-blue-950 flex-shrink-0">
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="p-2 bg-white rounded-xl text-blue-600 border border-blue-200 shadow-2xs flex-shrink-0">
                 <UserCheck className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -104,17 +134,41 @@ export const OrderConfirmationPage = () => {
                 <span className="text-[11px] sm:text-xs text-slate-600 block">
                   {order.paymentMethod === 'HOST_PAY'
                     ? (isHost ? 'Full invoice finalized and paid by you.' : 'You owe Rs. 0.00 — Host covered your items.')
-                    : 'Your individual calculated share for this order.'}
+                    : paidShare
+                    ? 'Your individual share has been marked as PAID.'
+                    : 'Your individual calculated share for this group order.'}
                 </span>
               </div>
             </div>
-            <div className="text-right flex-shrink-0">
-              <span className="text-[10px] sm:text-xs uppercase font-bold text-slate-500 block">Your Share</span>
-              <span className="text-base sm:text-xl font-black text-blue-700">
-                {order.paymentMethod === 'HOST_PAY' && !isHost
-                  ? formatCurrency(0, currency)
-                  : formatCurrency(myContribution ? myContribution.totalContribution : (isHost ? order.totalAmount : 0), currency)}
-              </span>
+
+            <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-blue-200/60">
+              <div className="text-left sm:text-right flex-shrink-0">
+                <span className="text-[10px] sm:text-xs uppercase font-bold text-slate-500 block">Your Share</span>
+                <span className="text-base sm:text-xl font-black text-blue-700">
+                  {order.paymentMethod === 'HOST_PAY' && !isHost
+                    ? formatCurrency(0, currency)
+                    : formatCurrency(myContribution ? myContribution.totalContribution : (isHost ? order.totalAmount : 0), currency)}
+                </span>
+              </div>
+
+              {!isHost && order.paymentMethod !== 'HOST_PAY' && (
+                <div>
+                  {paidShare ? (
+                    <span className="px-3 py-1.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold inline-flex items-center gap-1 shadow-2xs">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      Paid
+                    </span>
+                  ) : (
+                    <button
+                      onClick={handlePayShare}
+                      className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 flex items-center gap-1.5 transition active:scale-95"
+                    >
+                      <CreditCard className="w-3.5 h-3.5" />
+                      <span>Pay My Share</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

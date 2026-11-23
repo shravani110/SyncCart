@@ -8,7 +8,8 @@ import {
   Sparkles,
   AlertTriangle,
   DoorOpen,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2
 } from 'lucide-react';
 import { useRoom } from '../context/RoomContext';
 import { useAuth } from '../context/AuthContext';
@@ -170,6 +171,40 @@ export const RoomPage = () => {
 
       {/* Active Members Banner & Live Status */}
       <ActiveMembersBadge room={room} isConnected={isConnected} />
+
+      {/* Session Checked Out Notification Banner */}
+      {(room.status === 'CHECKED_OUT' || room.status === 'CONFIRMED') && (
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl shadow-xs flex flex-wrap items-center justify-between gap-3 animate-fade-in">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-slate-900">Group Order Finalized by Host ({room.hostFullName})</p>
+              <p className="text-xs text-slate-600">The cart was checked out. A receipt has been generated for all members.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              const cached = sessionStorage.getItem('synccart_latest_order');
+              if (cached) {
+                try {
+                  const parsed = JSON.parse(cached);
+                  if (parsed.orderNumber) {
+                    navigate(`/orders/${parsed.orderNumber}`);
+                    return;
+                  }
+                } catch (e) {}
+              }
+              navigate('/orders');
+            }}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-2xs flex items-center gap-1.5 transition"
+          >
+            <span>View Generated Receipt</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Shared Budget Progress Bar */}
       <BudgetProgressBar
