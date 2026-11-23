@@ -11,6 +11,16 @@ const typeStyles = {
 const formatTime = (ts) => {
   if (!ts) return 'Just now';
   try {
+    if (Array.isArray(ts)) {
+      const [year, month, day, hour = 0, minute = 0, second = 0] = ts;
+      const date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+      return new Intl.DateTimeFormat('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      }).format(date);
+    }
     let iso = String(ts).trim();
     if (iso.includes('T') && !iso.endsWith('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
       iso = `${iso}Z`;

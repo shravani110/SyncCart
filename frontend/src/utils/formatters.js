@@ -31,6 +31,17 @@ export const getInitials = (name) => {
 
 export const formatDate = (dateString) => {
   if (!dateString) return '';
+  if (Array.isArray(dateString)) {
+    const [year, month, day, hour = 0, minute = 0, second = 0] = dateString;
+    const date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
+  }
   let iso = String(dateString).trim();
   // If the server string is an ISO timestamp without timezone offset, append 'Z' (UTC)
   // so the browser converts it to the user's local timezone (e.g. IST).
