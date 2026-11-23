@@ -130,7 +130,19 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderDto> getUserOrders(User user) {
-        List<Order> orders = orderRepository.findByHostOrderByCreatedAtDesc(user);
+        List<RoomMember> memberships = memberRepository.findByUserOrderByJoinedAtDesc(user);
+        List<String> roomCodes = memberships.stream()
+                .map(m -> m.getRoom().getRoomCode())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        List<Order> orders;
+        if (roomCodes.isEmpty()) {
+            orders = orderRepository.findOrdersForUser(user);
+        } else {
+            orders = orderRepository.findOrdersForUserWithRooms(user, roomCodes);
+        }
+
         return orders.stream()
                 .map(o -> mapToOrderDto(o, null))
                 .collect(Collectors.toList());
