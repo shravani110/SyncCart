@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { roomApi } from '../api/roomApi';
 import { useWebSocket } from '../hooks/useWebSocket';
 import { useAuth } from './AuthContext';
