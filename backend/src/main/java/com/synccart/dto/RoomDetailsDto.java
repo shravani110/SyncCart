@@ -1,5 +1,6 @@
 package com.synccart.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.synccart.model.RoomRole;
 import com.synccart.model.RoomStatus;
 import java.math.BigDecimal;
@@ -17,6 +18,8 @@ public class RoomDetailsDto {
     private String hostUsername;
     private String hostFullName;
     private RoomStatus status;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime createdAt;
     private RoomRole currentUserRole; // Role of current requester
 

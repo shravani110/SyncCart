@@ -1,5 +1,6 @@
 package com.synccart.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public class WebSocketMessage<T> {
@@ -23,6 +24,8 @@ public class WebSocketMessage<T> {
     private String senderFullName;
     private String message;
     private T payload;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime timestamp = LocalDateTime.now();
 
     public WebSocketMessage() {

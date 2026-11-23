@@ -1,5 +1,6 @@
 package com.synccart.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.synccart.model.RoomRole;
 import java.time.LocalDateTime;
 
@@ -10,6 +11,8 @@ public class MemberDto {
     private String fullName;
     private String avatarUrl;
     private RoomRole roomRole;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime joinedAt;
 
     public MemberDto() {

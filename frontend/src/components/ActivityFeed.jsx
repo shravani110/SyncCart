@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock3, Sparkles } from 'lucide-react';
+import { getUserTimeZone } from '../utils/formatters';
 
 const typeStyles = {
   success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -11,6 +12,7 @@ const typeStyles = {
 const formatTime = (ts) => {
   if (!ts) return 'Just now';
   try {
+    const tz = getUserTimeZone();
     if (Array.isArray(ts)) {
       const [year, month, day, hour = 0, minute = 0, second = 0] = ts;
       const date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
@@ -19,9 +21,13 @@ const formatTime = (ts) => {
         minute: '2-digit',
         second: '2-digit',
         hour12: true,
+        timeZone: tz,
       }).format(date);
     }
     let iso = String(ts).trim();
+    if (iso.includes(' ') && !iso.includes('T')) {
+      iso = iso.replace(' ', 'T');
+    }
     if (iso.includes('T') && !iso.endsWith('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
       iso = `${iso}Z`;
     }
@@ -30,6 +36,7 @@ const formatTime = (ts) => {
       minute: '2-digit',
       second: '2-digit',
       hour12: true,
+      timeZone: tz,
     }).format(new Date(iso));
   } catch (e) {
     return 'Just now';

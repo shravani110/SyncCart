@@ -1,5 +1,6 @@
 package com.synccart.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,8 @@ public class CartItemDto {
     private String addedByUsername;
     private String addedByFullName;
     private String addedByAvatarUrl;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime updatedAt;
 
     public CartItemDto() {

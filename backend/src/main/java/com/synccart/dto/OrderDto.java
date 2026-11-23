@@ -1,5 +1,6 @@
 package com.synccart.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.synccart.model.OrderStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ public class OrderDto {
     private OrderStatus status;
     private String paymentMethod;
     private String shippingAddress;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime createdAt;
     private List<OrderItemDto> items = new ArrayList<>();
     private List<MemberContributionDto> contributions = new ArrayList<>();

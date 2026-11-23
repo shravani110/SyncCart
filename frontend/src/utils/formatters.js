@@ -29,8 +29,23 @@ export const getInitials = (name) => {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 };
 
+export const getUserTimeZone = () => {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Default to Asia/Kolkata (IST) if the browser environment reports UTC or unconfigured
+    if (!tz || tz.toUpperCase() === 'UTC' || tz.toUpperCase() === 'ETC/UTC') {
+      return 'Asia/Kolkata';
+    }
+    return tz;
+  } catch (e) {
+    return 'Asia/Kolkata';
+  }
+};
+
 export const formatDate = (dateString) => {
   if (!dateString) return '';
+  const tz = getUserTimeZone();
+
   if (Array.isArray(dateString)) {
     const [year, month, day, hour = 0, minute = 0, second = 0] = dateString;
     const date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
@@ -40,9 +55,14 @@ export const formatDate = (dateString) => {
       hour: '2-digit',
       minute: '2-digit',
       hour12: true,
+      timeZone: tz,
     });
   }
+
   let iso = String(dateString).trim();
+  if (iso.includes(' ') && !iso.includes('T')) {
+    iso = iso.replace(' ', 'T');
+  }
   // If the server string is an ISO timestamp without timezone offset, append 'Z' (UTC)
   // so the browser converts it to the user's local timezone (e.g. IST).
   if (iso.includes('T') && !iso.endsWith('Z') && !/[+-]\d{2}:?\d{2}$/.test(iso)) {
@@ -57,5 +77,6 @@ export const formatDate = (dateString) => {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true,
+    timeZone: tz,
   });
 };
