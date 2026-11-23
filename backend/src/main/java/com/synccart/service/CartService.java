@@ -60,7 +60,8 @@ public class CartService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + request.getProductId()));
 
-        Optional<CartItem> existingItem = cartItemRepository.findByRoomAndProduct(room, product);
+        // Keep items separated by user so additions don't merge under the host
+        Optional<CartItem> existingItem = cartItemRepository.findByRoomAndProductAndAddedBy(room, product, currentUser);
 
         if (existingItem.isPresent()) {
             CartItem item = existingItem.get();
@@ -101,17 +102,7 @@ public class CartService {
             throw new IllegalArgumentException("Cart item does not belong to room " + upperCode);
         }
 
-        // RBAC: Member can update only items they added; Host can update any item
-        RoomMember currentMember = memberRepository.findByRoomAndUser(room, currentUser)
-                .orElseThrow(() -> new IllegalArgumentException("User not a member"));
-
-        boolean isHost = currentMember.getRoomRole() == RoomRole.HOST;
-        boolean isOwner = item.getAddedBy().getId().equals(currentUser.getId());
-
-        if (!isHost && !isOwner) {
-            throw new IllegalStateException("Permission denied: You can only edit items you added unless you are Host");
-        }
-
+        // All active room members can update quantity
         if (request.getQuantity() <= 0) {
             cartItemRepository.delete(item);
         } else {
@@ -149,17 +140,7 @@ public class CartService {
             throw new IllegalArgumentException("Cart item does not belong to room " + upperCode);
         }
 
-        // RBAC: Member can remove items they added; Host can remove any item
-        RoomMember currentMember = memberRepository.findByRoomAndUser(room, currentUser)
-                .orElseThrow(() -> new IllegalArgumentException("User not a member"));
-
-        boolean isHost = currentMember.getRoomRole() == RoomRole.HOST;
-        boolean isOwner = item.getAddedBy().getId().equals(currentUser.getId());
-
-        if (!isHost && !isOwner) {
-            throw new IllegalStateException("Permission denied: You can only delete items you added unless you are Host");
-        }
-
+        // All active room members can remove items from the shared cart
         String productName = item.getProduct().getName();
         cartItemRepository.delete(item);
 

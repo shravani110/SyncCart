@@ -176,25 +176,52 @@ public class OrderService {
         dto.setItems(itemDtos);
 
         BigDecimal total = order.getTotalAmount();
+        String paymentMethod = order.getPaymentMethod() != null ? order.getPaymentMethod() : "SPLIT_PAY";
         List<MemberContributionDto> contributions = new ArrayList<>();
+        int memberCount = Math.max(1, memberContributions.size());
+
         for (Map.Entry<String, BigDecimal> entry : memberContributions.entrySet()) {
             String uname = entry.getKey();
-            BigDecimal amount = entry.getValue();
-            double pct = total.compareTo(BigDecimal.ZERO) > 0
-                    ? amount.divide(total, 4, RoundingMode.HALF_UP).doubleValue() * 100.0
-                    : 0.0;
+            BigDecimal itemsSubtotal = entry.getValue();
+            BigDecimal payableAmount;
+            double pct;
+
+            if ("HOST_PAY".equalsIgnoreCase(paymentMethod)) {
+                boolean isOrderHost = uname.equals(order.getHost().getUsername());
+                if (isOrderHost) {
+                    payableAmount = total;
+                    pct = 100.0;
+                } else {
+                    payableAmount = BigDecimal.ZERO;
+                    pct = 0.0;
+                }
+            } else if ("EQUAL_PAY".equalsIgnoreCase(paymentMethod)) {
+                payableAmount = total.divide(BigDecimal.valueOf(memberCount), 2, RoundingMode.HALF_UP);
+                pct = Math.round((100.0 / memberCount) * 10.0) / 10.0;
+            } else {
+                // SPLIT_PAY (default: each pays the items they added)
+                payableAmount = itemsSubtotal;
+                pct = total.compareTo(BigDecimal.ZERO) > 0
+                        ? amountRatio(itemsSubtotal, total)
+                        : 0.0;
+            }
+
             contributions.add(new MemberContributionDto(
                     null,
                     uname,
                     memberFullNames.get(uname),
                     null,
                     memberCounts.get(uname),
-                    amount,
-                    Math.round(pct * 10.0) / 10.0
+                    payableAmount,
+                    pct
             ));
         }
         dto.setContributions(contributions);
 
         return dto;
+    }
+
+    private double amountRatio(BigDecimal part, BigDecimal total) {
+        return Math.round(part.divide(total, 4, RoundingMode.HALF_UP).doubleValue() * 1000.0) / 10.0;
     }
 }

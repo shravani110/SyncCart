@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight, UserCheck, ShieldCheck } from 'lucide-react';
 import { orderApi } from '../api/orderApi';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { useRoom } from '../context/RoomContext';
+import { useAuth } from '../context/AuthContext';
 
 export const OrderConfirmationPage = () => {
   const { orderNumber } = useParams();
@@ -11,6 +12,11 @@ export const OrderConfirmationPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { currency } = useRoom();
+  const { user } = useAuth();
+
+  const currentUsername = user?.username;
+  const isHost = order && user && (order.hostUsername === user.username || order.hostId === user.id);
+  const myContribution = order?.contributions?.find((c) => c.username === currentUsername);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -80,6 +86,39 @@ export const OrderConfirmationPage = () => {
 
       {/* Order Details Card - Expands to Fill Vertical Screen Space Gracefully */}
       <div className="flex-1 bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 shadow-sm flex flex-col justify-between gap-3 sm:gap-5 min-h-0">
+        {/* Personalized Member Share Status */}
+        {user && (
+          <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl border text-xs sm:text-sm flex items-center justify-between gap-3 shadow-2xs bg-blue-50/80 border-blue-200 text-blue-950 flex-shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="p-2 bg-white rounded-xl text-blue-600 border border-blue-200 shadow-2xs flex-shrink-0">
+                <UserCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <span className="font-bold block">
+                  {order.paymentMethod === 'HOST_PAY'
+                    ? (isHost ? 'You paid the entire group cart as Host.' : `Covered by Host (${order.hostFullName})`)
+                    : order.paymentMethod === 'EQUAL_PAY'
+                    ? 'Equal Split (split equally across all members)'
+                    : 'Smart Split Pay (based on your added items)'}
+                </span>
+                <span className="text-[11px] sm:text-xs text-slate-600 block">
+                  {order.paymentMethod === 'HOST_PAY'
+                    ? (isHost ? 'Full invoice finalized and paid by you.' : 'You owe Rs. 0.00 — Host covered your items.')
+                    : 'Your individual calculated share for this order.'}
+                </span>
+              </div>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <span className="text-[10px] sm:text-xs uppercase font-bold text-slate-500 block">Your Share</span>
+              <span className="text-base sm:text-xl font-black text-blue-700">
+                {order.paymentMethod === 'HOST_PAY' && !isHost
+                  ? formatCurrency(0, currency)
+                  : formatCurrency(myContribution ? myContribution.totalContribution : (isHost ? order.totalAmount : 0), currency)}
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Info Grid - 2 cols on mobile to avoid awkward truncation, 3 cols on sm+ */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4 pb-2.5 sm:pb-4 border-b border-slate-100 text-xs flex-shrink-0">
           <div>

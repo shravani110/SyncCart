@@ -22,6 +22,7 @@ export const RoomProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [liveNotification, setLiveNotification] = useState(null);
   const [activityFeed, setActivityFeed] = useState([]);
+  const [completedOrder, setCompletedOrder] = useState(null);
 
   // Clear live notification after 4 seconds
   useEffect(() => {
@@ -54,8 +55,9 @@ export const RoomProvider = ({ children }) => {
     if (msg.payload && typeof msg.payload === 'object' && msg.payload.roomCode) {
       setRoom(msg.payload);
     } else if (msg.type === 'CHECKOUT_COMPLETED' && msg.payload) {
-      // If room just completed checkout, update room status
+      // If room just completed checkout, update room status and store completed order for instant member redirect
       setRoom((prev) => prev ? { ...prev, status: 'CHECKED_OUT', cartItems: [], totalCartAmount: 0 } : null);
+      setCompletedOrder(msg.payload);
     } else {
       // Fallback: fetch latest room state
       if (activeRoomCode) {
@@ -216,6 +218,8 @@ export const RoomProvider = ({ children }) => {
         removeItemFromCart,
         clearRoomCart,
         updateRoomBudget,
+        completedOrder,
+        clearCompletedOrder: () => setCompletedOrder(null),
         removeRoomMember,
         checkoutRoom,
       }}

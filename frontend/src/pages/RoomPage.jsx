@@ -43,6 +43,8 @@ export const RoomPage = () => {
     checkoutRoom,
     leaveRoom,
     currency,
+    completedOrder,
+    clearCompletedOrder,
   } = useRoom();
 
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -51,6 +53,15 @@ export const RoomPage = () => {
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [leavingRoom, setLeavingRoom] = useState(false);
+
+  // Real-time automatic redirect to Order Receipt for all members upon Host checkout
+  useEffect(() => {
+    if (completedOrder && completedOrder.orderNumber) {
+      const targetOrder = completedOrder.orderNumber;
+      if (clearCompletedOrder) clearCompletedOrder();
+      navigate(`/orders/${targetOrder}`);
+    }
+  }, [completedOrder, navigate, clearCompletedOrder]);
 
   useEffect(() => {
     if (roomCode) {

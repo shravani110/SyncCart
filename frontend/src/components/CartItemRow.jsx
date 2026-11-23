@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Minus, Trash2, Lock } from 'lucide-react';
+import { Plus, Minus, Trash2 } from 'lucide-react';
 import { formatCurrency, getInitials } from '../utils/formatters';
 import { useRoom } from '../context/RoomContext';
 
@@ -13,7 +13,7 @@ export const CartItemRow = ({
 }) => {
   const { currency } = useRoom();
   const isOwner = item.addedByUserId === currentUserId;
-  const canModify = isHost || isOwner;
+  const canModify = true; // All members in the room can remove or update quantities
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white hover:bg-blue-50/30 border border-slate-200/90 rounded-2xl gap-4 shadow-2xs transition-all group">
@@ -66,10 +66,10 @@ export const CartItemRow = ({
         {/* Quantity Controls */}
         <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl p-1 shadow-2xs">
           <button
-            disabled={!canModify || item.quantity <= 1}
+            disabled={item.quantity <= 1}
             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
             className="p-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white disabled:opacity-40 disabled:hover:bg-transparent transition"
-            title={canModify ? 'Decrease quantity' : 'Only Host or item owner can change quantity'}
+            title="Decrease quantity"
           >
             <Minus className="w-3.5 h-3.5" />
           </button>
@@ -77,10 +77,9 @@ export const CartItemRow = ({
             {item.quantity}
           </span>
           <button
-            disabled={!canModify}
             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-            className="p-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white disabled:opacity-40 disabled:hover:bg-transparent transition"
-            title={canModify ? 'Increase quantity' : 'Only Host or item owner can change quantity'}
+            className="p-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-white transition"
+            title="Increase quantity"
           >
             <Plus className="w-3.5 h-3.5" />
           </button>
@@ -96,22 +95,13 @@ export const CartItemRow = ({
 
         {/* Remove Button */}
         <div>
-          {canModify ? (
-            <button
-              onClick={() => onRemoveItem(item.id)}
-              className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
-              title="Remove from shared cart"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          ) : (
-            <div
-              className="p-2 text-slate-300 cursor-not-allowed"
-              title="Only Host or the member who added this item can remove it"
-            >
-              <Lock className="w-4 h-4" />
-            </div>
-          )}
+          <button
+            onClick={() => onRemoveItem(item.id)}
+            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
+            title="Remove from shared cart"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>
